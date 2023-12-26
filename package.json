@@ -65,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BigFor4/react-query-builder-antd-input.git"
+    "url": "git+https://github.com/BigFor4/react-query-builder-antd-input.git"
   },
   "author": "Denis Oblogin <BigFor4@gmail.com> (https://github.com/BigFor4)",
   "license": "MIT",
