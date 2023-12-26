@@ -122,14 +122,14 @@ const parseConditionString = (conditionString) => {
     const condition = match[3] === '=' ? '==' : match[3];
     let value = match[4].trim();
     if (!attribute || !condition || !value) {
-      return null;
+      return {};
     }
     if (!isNaN(value)) {
       value = parseFloat(value);
     }
     return { attribute, condition, value };
   }
-  return null;
+  return {};
 };
 function convertGroup(node) {
   const group = {
