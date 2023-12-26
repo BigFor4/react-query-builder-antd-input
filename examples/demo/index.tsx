@@ -101,7 +101,7 @@ const DemoQueryBuilder: React.FC = () => {
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (
-      <div className="query-builder-container" style={{ padding: "10px" }}>
+      <div className="query-builder-container">
         <div className="query-builder qb-lite">
           <Builder {...bprops} />
         </div>
