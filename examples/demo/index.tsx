@@ -10,10 +10,11 @@ const stringify = JSON.stringify;
 const { getTree, loadTree, uuid } = Utils;
 const preStyle = { backgroundColor: "darkgrey", margin: "10px", padding: "10px" };
 
-const initialSkin = window._initialSkin || "antd";
+const initialSkin = "antd";
 const emptyInitValue: JsonTree = { id: uuid(), type: "group" };
 const loadedConfig = loadConfig(initialSkin);
-let initValue: JsonTree = loadedInitValue && Object.keys(loadedInitValue).length > 0 ? loadedInitValue as JsonTree : emptyInitValue;
+// let initValue: JsonTree = loadedInitValue && Object.keys(loadedInitValue).length > 0 ? loadedInitValue as JsonTree : emptyInitValue;
+let initValue = emptyInitValue;
 let initTree: ImmutableTree;
 initTree = loadTree(initValue);
 
@@ -84,20 +85,6 @@ const DemoQueryBuilder: React.FC = () => {
     initValue = _initValue;
   };
 
-  const resetValue = () => {
-    setState({
-      ...state,
-      tree: initTree,
-    });
-  };
-
-  const clearValue = () => {
-    setState({
-      ...state,
-      tree: loadTree(emptyInitValue),
-    });
-  };
-
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (
@@ -139,11 +126,6 @@ const DemoQueryBuilder: React.FC = () => {
 
   return (
     <div>
-      <div>
-        <button onClick={resetValue}>reset</button>
-        <button onClick={clearValue}>clear</button>
-      </div>
-
       <Query
         {...state.config}
         value={state.tree}

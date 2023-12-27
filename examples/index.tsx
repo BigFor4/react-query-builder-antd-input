@@ -1,23 +1,56 @@
 
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import ReactDOM from "react-dom";
-const Demo = React.lazy(() => import("./demo"));
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
+import Demo from "./demo/index";
 
-import "../css/antd.less"; // or import "antd/dist/antd.css";
+import "../css/antd.less";
 import "../css/styles.scss";
-//import '../css/compact_styles.scss'; //optional
+import "antd/dist/antd.css";
 
-const rootElement = window.document.getElementById("root");
+import { Button } from "antd";
+const stringify = JSON.stringify;
+const preStyle = {
+  backgroundColor: "darkgrey",
+  margin: "10px",
+  padding: "10px",
+};
+function App() {
+  const [arrayQuery, setArrayQuery] = useState([]);
+  const [arrayResultQuery, setArrayResultQuery] = useState([]);
+  const addNewQuery = () => {
+    setArrayQuery((prev) => [
+      ...prev,
+      <Demo
+        key={arrayQuery.length}
+        index={arrayQuery.length}
+        setArrayResultQuery={setArrayResultQuery}
+        arrayResultQuery={arrayResultQuery}
+      />,
+    ]);
+  };
 
-ReactDOM.render((
-  <BrowserRouter basename={location.host == "BigFor4.github.io" ? "/react-query-builder-antd-input" : "/"}>
-    <Routes>
-      <Route path="*" element={<React.Suspense fallback={<>...</>}><Demo /></React.Suspense>} />
-    </Routes>
-  </BrowserRouter>
-), rootElement);
+  return (
+    <div className="App" style={{ padding: 5 }}>
+      <Button type="primary" onClick={addNewQuery}>
+        Add New Query
+      </Button>
+      {arrayQuery.map((item, index) => (
+        <div key={index} style={{ marginTop: 15 }}>
+          {item}
+        </div>
+      ))}
+      {/* <div>
+        <hr />
+        <div>
+          Tree:
+          <pre style={preStyle}>
+            {stringify(arrayResultQuery, undefined, 2)}
+          </pre>
+        </div>
+      </div> */}
+    </div>
+  );
+}
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);

@@ -21,7 +21,7 @@ import { deepEqual, defaultValue, applyToJS } from "../utils/stuff";
 import { validateValue } from "../utils/validation";
 import omit from "lodash/omit";
 import mapValues from "lodash/mapValues";
-import { getTreeData, searchTreeNode } from "../import";
+import { findObjectById } from "../import";
 
 /**
  * @param {object} config
@@ -327,10 +327,9 @@ const setField = (state, path, newField, config) => {
     newField = newField.join(fieldSeparator);
   const currentType = state.getIn(expandTreePath(path, "type"));
   const wasRuleGroup = currentType == "rule_group";
-  const treeData = getTreeData();
   const pathJS = path.toJS();
   const idNode = pathJS[pathJS.length - 1];
-  let object = searchTreeNode(treeData, 'id', idNode);
+  let object = findObjectById(state.toJS(), idNode);
   let currentProperties = object?.properties;
   const newFieldConfig = JSON.parse(JSON.stringify(object));
   let valueField = new Immutable.fromJS([]);
@@ -405,10 +404,9 @@ const setField = (state, path, newField, config) => {
  */
 const setOperator = (state, path, newOperator, config) => {
   const { showErrorMessage } = config.settings;
-  const treeData = getTreeData();
   const pathJS = path.toJS();
   const idNode = pathJS[pathJS.length - 1];
-  let object = searchTreeNode(treeData, 'id', idNode);
+  let object = findObjectById(state.toJS(), idNode);
   let currentProperties = object;
   let valueField = new Immutable.fromJS([]);
   if (currentProperties?.properties) {
@@ -473,10 +471,9 @@ const setValue = (state, path, newField, config) => {
 
   const currentType = state.getIn(expandTreePath(path, "type"));
   const wasRuleGroup = currentType == "rule_group";
-  const treeData = getTreeData();
   const pathJS = path.toJS();
   const idNode = pathJS[pathJS.length - 1];
-  let object = searchTreeNode(treeData, 'id', idNode);
+  let object = findObjectById(state.toJS(), idNode);
   let currentProperties = object?.properties;
   const newFieldConfig = JSON.parse(JSON.stringify(object));
   if (currentProperties) {
@@ -536,7 +533,6 @@ const setValue = (state, path, newField, config) => {
       current = current
         .set("valueError", newValueError);
     }
-
     return current
       .set("field", field)
       .set("operator", newOperator)

@@ -28,6 +28,7 @@ const createGroupContainer = (Group) =>
       //connected:
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
+      tree: PropTypes.any
     };
 
     constructor(props) {
@@ -181,7 +182,7 @@ const createGroupContainer = (Group) =>
               config={this.props.config}
               children1={this.props.children1}
               actions={this.props.actions}
-              //tree={this.props.tree}
+              tree={this.props.tree}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
@@ -219,7 +220,6 @@ const createGroupContainer = (Group) =>
               config={this.props.config}
               children1={this.props.children1}
               actions={this.props.actions}
-              //tree={this.props.tree}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
@@ -228,6 +228,7 @@ const createGroupContainer = (Group) =>
               isLocked={this.props.isLocked}
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
+              tree={this.props.tree}
             />
           ]}
         </div>
@@ -242,6 +243,7 @@ export default (Group) => {
     (state) => {
       return {
         dragging: state.dragging,
+        tree: state.tree
       };
     },
     null,

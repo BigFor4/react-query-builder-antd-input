@@ -74,7 +74,6 @@ class RuleGroup extends BasicGroup {
 
   renderActions() {
     const {config, addRule, isLocked, isTrueLocked, id} = this.props;
-
     return <RuleGroupActions
       config={config}
       addRule={addRule}

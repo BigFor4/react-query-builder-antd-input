@@ -5,9 +5,7 @@ import { extendConfig } from "../utils/configUtils";
 import { getTreeBadFields, getLightTree } from "../utils/treeUtils";
 import { isJsonLogic } from "../utils/stuff";
 let treeData = [];
-export const setTreeData = (data) => {
-  treeData = data;
-};
+
 export const getTreeData = () => {
   return treeData;
 };
@@ -79,26 +77,25 @@ export const getTree = (immutableTree, light = true, children1AsArray = true) =>
   tree = tree.toJS();
   if (light)
     tree = getLightTree(tree, children1AsArray);
-  setTreeData(tree);
   return convertJson(tree);
 };
-export const searchTreeNode = (data, key, match) => {
-  if (!data) return;
-  if (!Array.isArray(data)) {
-    data = [data];
+export const findObjectById = (root, targetId) => {
+  if (typeof root === 'object' && root !== null && 'id' in root) {
+    if (root.id === targetId) {
+      return root;
+    }
   }
-  const stack = [];
-  data.map(item => stack.push(item));
-  while (stack.length > 0) {
-    const node = stack.pop();
-    if (node[key] === match) {
-      return node;
-    } else if (node.children1) {
-      node.children1.map(child => stack.push(child));
+  for (const key in root) {
+    if (typeof root[key] === 'object' && root[key] !== null) {
+      const result = findObjectById(root[key], targetId);
+      if (result) {
+        return result;
+      }
     }
   }
   return null;
-}; function convertRule(node) {
+}
+function convertRule(node) {
   let { attribute, condition, value } = parseConditionString(node.title);
   const rule = {
     type: "rule",
@@ -174,15 +171,12 @@ export const loadTree = (serTree) => {
   }
   serTree = convertGroup(serTree);
   if (isImmutableTree(serTree)) {
-    setTreeData(serTree);
     return serTree;
   } else if (isTree(serTree)) {
-    setTreeData(serTree);
     return jsTreeToImmutable(serTree);
   } else if (typeof serTree == "string" && serTree.startsWith('["~#iM"')) {
     throw "You are trying to load query in obsolete serialization format (Immutable string) which is not supported in versions starting from 2.1.17";
   } else if (typeof serTree == "string") {
-    setTreeData(JSON.parse(serTree));
     return jsTreeToImmutable(JSON.parse(serTree));
   } else throw "Can't load tree!";
 };

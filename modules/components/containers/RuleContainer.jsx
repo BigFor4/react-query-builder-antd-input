@@ -27,9 +27,9 @@ const createRuleContainer = (Rule) =>
       parentField: PropTypes.string, //from RuleGroup
       isLocked: PropTypes.bool,
       isTrueLocked: PropTypes.bool,
-      //connected:
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
+      tree: PropTypes.any,
     };
 
     constructor(props) {
@@ -93,7 +93,6 @@ const createRuleContainer = (Rule) =>
       }
       return should;
     }
-
     render() {
       const isDraggingMe = this.props.dragging.id == this.props.id;
       const fieldConfig = getFieldConfig(this.props.config, this.props.field);
@@ -139,6 +138,7 @@ const createRuleContainer = (Rule) =>
               isLocked={this.props.isLocked}
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
+              tree={this.props.tree}
             /> : null
             ,
             <Rule
@@ -169,6 +169,7 @@ const createRuleContainer = (Rule) =>
               isLocked={this.props.isLocked}
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
+              tree={this.props.tree}
             />
           ]}
         </div>

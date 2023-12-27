@@ -10,7 +10,7 @@ import { getFieldPathLabels, getValueSourcesForFieldOp } from "../../utils/ruleU
 import { useOnPropsChanged } from "../../utils/reactUtils";
 import { Col, DragIcon, dummyFn, ConfirmFn } from "../utils";
 import { Input } from "antd";
-import { getTreeData, searchTreeNode } from "../../import";
+import { findObjectById } from "../../import";
 const classNames = require("classnames");
 
 
@@ -45,6 +45,7 @@ class Rule extends PureComponent {
     setValue: PropTypes.func,
     setValueSrc: PropTypes.func,
     reordableNodesCnt: PropTypes.number,
+    tree: PropTypes.any
   };
 
   constructor(props) {
@@ -68,8 +69,7 @@ class Rule extends PureComponent {
 
   getMeta({ selectedField, selectedOperator, config, reordableNodesCnt, isLocked, id }) {
     const selectedFieldPartsLabels = getFieldPathLabels(selectedField, config);
-    const treeData = getTreeData();
-    const selectedFieldConfig = searchTreeNode(treeData, 'id', id);
+    const selectedFieldConfig = findObjectById(this.props.tree.toJS(), id);
     const isSelectedGroup = selectedFieldConfig && selectedFieldConfig.type == "!struct";
     const isFieldAndOpSelected = selectedOperator && !isSelectedGroup;
     const selectedOperatorConfig = getOperatorConfig(config, selectedOperator, selectedField);

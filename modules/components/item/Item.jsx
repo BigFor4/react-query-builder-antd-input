@@ -17,7 +17,7 @@ const types = [
 
 const getProperties = (props) => {
   const properties = props.properties.toObject();
-  const result = {...properties};
+  const result = { ...properties };
   if (props.isParentLocked) {
     result.isLocked = true;
   }
@@ -26,7 +26,6 @@ const getProperties = (props) => {
   }
   return result;
 };
-
 const typeMap = {
   rule: (props) => (
     <Rule
@@ -42,17 +41,17 @@ const typeMap = {
       isDraggingTempo={props.isDraggingTempo}
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
   group: (props) => (
-    <Group 
+    <Group
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
       path={props.path}
       actions={props.actions}
       config={props.config}
-      //tree={props.tree}
       reordableNodesCnt={props.reordableNodesCnt}
       totalRulesCnt={props.totalRulesCnt}
       onDragStart={props.onDragStart}
@@ -60,17 +59,17 @@ const typeMap = {
       children1={props.children1}
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
   rule_group: (props) => (
-    <RuleGroup 
+    <RuleGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
       path={props.path}
       actions={props.actions}
       config={props.config}
-      //tree={props.tree}
       reordableNodesCnt={props.reordableNodesCnt}
       totalRulesCnt={props.totalRulesCnt}
       onDragStart={props.onDragStart}
@@ -78,17 +77,17 @@ const typeMap = {
       children1={props.children1}
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
   rule_group_ext: (props) => (
-    <RuleGroupExt 
+    <RuleGroupExt
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
       path={props.path}
       actions={props.actions}
       config={props.config}
-      //tree={props.tree}
       reordableNodesCnt={props.reordableNodesCnt}
       totalRulesCnt={props.totalRulesCnt}
       onDragStart={props.onDragStart}
@@ -96,17 +95,17 @@ const typeMap = {
       children1={props.children1}
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
   switch_group: (props) => (
-    <SwitchGroup 
+    <SwitchGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
       path={props.path}
       actions={props.actions}
       config={props.config}
-      //tree={props.tree}
       reordableNodesCnt={props.reordableNodesCnt}
       totalRulesCnt={props.totalRulesCnt}
       onDragStart={props.onDragStart}
@@ -114,17 +113,17 @@ const typeMap = {
       children1={props.children1}
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
   case_group: (props) => (
-    <CaseGroup 
+    <CaseGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
       path={props.path}
       actions={props.actions}
       config={props.config}
-      //tree={props.tree}
       reordableNodesCnt={props.reordableNodesCnt}
       totalRulesCnt={props.totalRulesCnt}
       onDragStart={props.onDragStart}
@@ -132,6 +131,7 @@ const typeMap = {
       children1={props.children1}
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
+      tree={props.tree}
     />
   ),
 };
@@ -158,11 +158,11 @@ class Item extends PureComponent {
   render() {
     const { type, ...props } = this.props;
     const mode = props.properties.get("mode");
-    const postfix = mode == "array" ? "_ext" : "";    
+    const postfix = mode == "array" ? "_ext" : "";
     const renderItem = props.config.settings.renderItem;
     let Cmp = typeMap[type + postfix];
     if (renderItem) {
-      return renderItem({...props, type, itemComponent: Cmp});
+      return renderItem({ ...props, type, itemComponent: Cmp });
     }
     if (!Cmp) return null;
     return Cmp(props);

@@ -69,6 +69,7 @@ export default class Builder extends Component {
         totalRulesCnt={totalRulesCnt}
         parentReordableNodesCnt={0}
         onDragStart={this.props.onDragStart}
+        tree={tree}
       />
     );
   }

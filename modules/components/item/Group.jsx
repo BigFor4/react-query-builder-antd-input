@@ -13,7 +13,6 @@ const defaultPosition = "topRight";
 
 export class BasicGroup extends PureComponent {
   static propTypes = {
-    //tree: PropTypes.instanceOf(Immutable.Map).isRequired,
     reordableNodesCnt: PropTypes.number,
     conjunctionOptions: PropTypes.object.isRequired,
     allowFurtherNesting: PropTypes.bool.isRequired,
@@ -39,6 +38,7 @@ export class BasicGroup extends PureComponent {
     setNot: PropTypes.func.isRequired,
     setLock: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
+    tree: PropTypes.any
   };
 
   constructor(props) {
@@ -184,7 +184,7 @@ export class BasicGroup extends PureComponent {
   };
 
   renderActions() {
-    const {config, addRule, addGroup, isLocked, isTrueLocked, id} = this.props;
+    const {config, addRule, addGroup, isLocked, isTrueLocked, id, tree} = this.props;
 
     return <GroupActions
       config={config}
@@ -198,6 +198,7 @@ export class BasicGroup extends PureComponent {
       isLocked={isLocked}
       isTrueLocked={isTrueLocked}
       id={id}
+      tree={tree}
     />;
   }
 
@@ -226,7 +227,6 @@ export class BasicGroup extends PureComponent {
     const {config, actions, onDragStart, isLocked} = props;
     const isRuleGroup = item.get("type") == "group" && item.getIn(["properties", "field"]) != null;
     const type = isRuleGroup ? "rule_group" : item.get("type");
-    
     return (
       <Item
         {...this.extraPropsForItem(item)}
@@ -245,6 +245,7 @@ export class BasicGroup extends PureComponent {
         onDragStart={onDragStart}
         isDraggingTempo={this.props.isDraggingTempo}
         isParentLocked={isLocked}
+        tree={this.props.tree}
       />
     );
   }
@@ -294,7 +295,8 @@ export class BasicGroup extends PureComponent {
   renderConjs() {
     const {
       config, children1, id,
-      selectedConjunction, setConjunction, not, setNot, isLocked
+      selectedConjunction, setConjunction, not, setNot, isLocked,
+      tree
     } = this.props;
 
     const {immutableGroupsMode, renderConjs: Conjs, showNot: _showNot, notLabel} = config.settings;
@@ -316,7 +318,8 @@ export class BasicGroup extends PureComponent {
       setNot: immutableGroupsMode ? dummyFn : setNot,
       notLabel: notLabel,
       showNot: this.showNot(),
-      isLocked: isLocked
+      isLocked: isLocked,
+      tree: tree
     };
     return <Conjs {...renderProps} />;
   }
