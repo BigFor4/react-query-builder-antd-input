@@ -128,7 +128,7 @@ export const mongoFormatOp2 = (mops, not,  field, _op, values, useExpr, valueSrc
 
 const operators = {
   equal: {
-    label: "==",
+    label: "=",
     labelForFormat: "==",
     sqlOp: "=",
     spelOp: "==",
@@ -398,7 +398,7 @@ const operators = {
     elasticSearchQueryType: "exists",
   },
   select_equals: {
-    label: "==",
+    label: "=",
     labelForFormat: "==",
     sqlOp: "=", // enum/set
     formatOp: (field, op, value, valueSrc, valueType, opDef, operatorOptions, isForDisplay) => {
@@ -927,7 +927,7 @@ const widgets = {
     valueLabel: "Field to compare",
     valuePlaceholder: "Select field to compare",
     customProps: {
-      showSearch: true
+      // showSearch: true
     }
   },
   func: {
@@ -1121,7 +1121,7 @@ const types = {
         ],
         widgetProps: {
           customProps: {
-            showSearch: true
+            // showSearch: true
           }
         },
       },
@@ -1323,7 +1323,7 @@ const settings = {
     }
   },
   customFieldSelectProps: {
-    showSearch: true
+    // showSearch: true
   },
 
   defaultSliderWidth: "200px",

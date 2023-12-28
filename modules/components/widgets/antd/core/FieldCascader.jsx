@@ -42,11 +42,6 @@ export default class FieldCascader extends PureComponent {
       selectedPath, selectedLabel, selectedOpts, selectedAltLabel, selectedFullLabel, readonly, selectedField, parentField, 
     } = this.props;
     let customProps2 = {...customProps};
-    if (customProps2.showSearch) {
-      customProps2.showSearch = {
-        filter: this.filterOption
-      };
-    }
 
     const {fieldSeparator} = config.settings;
     const parentFieldPath = parentField ? parentField.split(fieldSeparator) : [];

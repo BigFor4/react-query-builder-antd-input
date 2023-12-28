@@ -39,7 +39,7 @@ const operators = [
   {
     "key": "equal",
     "path": "equal",
-    "label": "==",
+    "label": "=",
     "labelForFormat": "==",
     "sqlOp": "=",
     "reversedOp": "not_equal",

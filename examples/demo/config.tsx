@@ -15,8 +15,21 @@ export default (skin: string) => {
 
   const conjunctions: Conjunctions = {
     ...InitialConfig.conjunctions,
+    "NOR": {
+      "label": "Nor",
+      "mongoConj": "$nor",
+      "jsonLogicConj": "nor",
+      "sqlConj": "NOR",
+      "spelConj": "nor",
+    },
+    "XOR": {
+      "label": "Nor",
+      "mongoConj": "$nor",
+      "jsonLogicConj": "nor",
+      "sqlConj": "NOR",
+      "spelConj": "nor",
+    }
   };
-
   const operators: Operators = {
     ...InitialConfig.operators
   };
@@ -96,9 +109,6 @@ export default (skin: string) => {
     canLeaveEmptyGroup: true,
     shouldCreateEmptyGroup: false,
     showErrorMessage: true,
-    customFieldSelectProps: {
-      showSearch: true
-    }
   };
 
 

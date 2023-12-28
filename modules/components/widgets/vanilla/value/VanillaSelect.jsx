@@ -16,7 +16,7 @@ export default ({listValues, value, setValue, allowCustomValues, readonly, custo
       onChange={onChange}
       value={hasValue ? value : ""}
       disabled={readonly}
-      {...omit(customProps, ["showSearch", "input"])}
+      {...omit(customProps, ["input"])}
     >
       {!hasValue && <option disabled value={""}></option>}
       {renderOptions()}

@@ -150,7 +150,7 @@ function convertNode(node) {
 }
 
 function getOperator(operator) {
-  if (operator === "==" || operator === "===") {
+  if (operator === "==" || operator === "===" || operator === "=") {
     return "equal";
   } else if (operator === "!=" || operator === "!==") {
     return "not_equal";

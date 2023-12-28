@@ -252,7 +252,6 @@ const buildConv = (config) => {
   for (let opKey in config.operators) {
     const opConfig = config.operators[opKey];
     if (opConfig.spelOps) {
-      // examples: "==", "eq", ".contains", "matches" (can be used for starts_with, ends_with)
       opConfig.spelOps.forEach(spelOp => {
         const opk = spelOp; // + "/" + defaultValue(opConfig.cardinality, 1);
         if (!operators[opk])

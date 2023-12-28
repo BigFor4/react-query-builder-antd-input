@@ -29,7 +29,7 @@ export default ({listValues, value, setValue, allowCustomValues, readonly, custo
       onChange={onChange}
       value={value}
       disabled={readonly}
-      {...omit(customProps, ["showSearch", "input", "showCheckboxes"])}
+      {...omit(customProps, ["input", "showCheckboxes"])}
     >
       {renderOptions()}
     </select>
