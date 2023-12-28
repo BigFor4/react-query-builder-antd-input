@@ -5,6 +5,7 @@ import {
 } from "react-query-builder-antd-input";
 import throttle from "lodash/throttle";
 import loadConfig from "./config";
+import axios from "axios";
 import loadedInitValue from "./init_value";
 const stringify = JSON.stringify;
 const { getTree, loadTree, uuid } = Utils;
@@ -84,13 +85,17 @@ const DemoQueryBuilder: React.FC = () => {
     initTree = _initTree;
     initValue = _initValue;
   };
-
+  const searchObject = async (value) => {
+    return []
+  };
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (
       <div className="query-builder-container">
         <div className="query-builder qb-lite">
-          <Builder {...bprops} />
+          <Builder {...bprops}
+            // searchObject={searchObject}
+          />
         </div>
       </div>
     );

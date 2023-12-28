@@ -12,11 +12,8 @@ class Query extends Component {
     config: PropTypes.object.isRequired,
     onChange: PropTypes.func,
     renderBuilder: PropTypes.func,
-    tree: PropTypes.any, //instanceOf(Immutable.Map)
-    //dispatch: PropTypes.func.isRequired,
-    //__isInternalValueChange
-    //__lastAction
-    //getMemoizedTree: PropTypes.func.isRequired,
+    tree: PropTypes.any,
+    searchObject: PropTypes.func
   };
 
   constructor(props) {

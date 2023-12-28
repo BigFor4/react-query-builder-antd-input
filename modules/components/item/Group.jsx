@@ -5,8 +5,8 @@ import GroupContainer from "../containers/GroupContainer";
 import Draggable from "../containers/Draggable";
 const classNames = require("classnames");
 import { Item } from "./Item";
-import {GroupActions} from "./GroupActions";
-import {ConfirmFn, DragIcon, dummyFn} from "../utils";
+import { GroupActions } from "./GroupActions";
+import { ConfirmFn, DragIcon, dummyFn } from "../utils";
 
 const defaultPosition = "topRight";
 
@@ -38,7 +38,8 @@ export class BasicGroup extends PureComponent {
     setNot: PropTypes.func.isRequired,
     setLock: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
-    tree: PropTypes.any
+    tree: PropTypes.any,
+    searchObject: PropTypes.func
   };
 
   constructor(props) {
@@ -58,13 +59,14 @@ export class BasicGroup extends PureComponent {
   }
 
   removeSelf() {
-    const {confirmFn} = this.props;
-    const {renderConfirm, removeGroupConfirmOptions: confirmOptions} = this.props.config.settings;
+    const { confirmFn } = this.props;
+    const { renderConfirm, removeGroupConfirmOptions: confirmOptions } = this.props.config.settings;
     const doRemove = () => {
       this.props.removeSelf();
     };
     if (confirmOptions && !this.isEmptyCurrentGroup()) {
-      renderConfirm({...confirmOptions,
+      renderConfirm({
+        ...confirmOptions,
         onOk: doRemove,
         onCancel: null,
         confirmFn: confirmFn
@@ -95,8 +97,8 @@ export class BasicGroup extends PureComponent {
     const properties = rule.get("properties");
     return !(
       properties.get("field") !== null
-          && properties.get("operator") !== null
-          && properties.get("value").filter((val) => val !== undefined).size > 0
+      && properties.get("operator") !== null
+      && properties.get("value").filter((val) => val !== undefined).size > 0
     );
   }
 
@@ -109,24 +111,24 @@ export class BasicGroup extends PureComponent {
   }
 
   showNot() {
-    const {config} = this.props;
+    const { config } = this.props;
     return config.settings.showNot;
   }
 
   // show conjs for 2+ children?
   showConjs() {
-    const {conjunctionOptions, children1, config} = this.props;
+    const { conjunctionOptions, children1, config } = this.props;
     const conjunctionCount = Object.keys(conjunctionOptions).length;
     return conjunctionCount > 1 || this.showNot();
   }
 
   isOneChild() {
-    const {children1} = this.props;
+    const { children1 } = this.props;
     return children1 ? children1.size < 2 : true;
   }
 
   renderChildrenWrapper() {
-    const {children1} = this.props;
+    const { children1 } = this.props;
 
     return children1 && (
       <div key="group-children" className={classNames(
@@ -172,7 +174,7 @@ export class BasicGroup extends PureComponent {
     if (BeforeActions == undefined)
       return null;
 
-    return typeof BeforeActions === "function" ? <BeforeActions {...this.props}/> : BeforeActions;
+    return typeof BeforeActions === "function" ? <BeforeActions {...this.props} /> : BeforeActions;
   };
 
   renderAfterActions = () => {
@@ -180,11 +182,11 @@ export class BasicGroup extends PureComponent {
     if (AfterActions == undefined)
       return null;
 
-    return typeof AfterActions === "function" ? <AfterActions {...this.props}/> : AfterActions;
+    return typeof AfterActions === "function" ? <AfterActions {...this.props} /> : AfterActions;
   };
 
   renderActions() {
-    const {config, addRule, addGroup, isLocked, isTrueLocked, id, tree} = this.props;
+    const { config, addRule, addGroup, isLocked, isTrueLocked, id, tree, searchObject } = this.props;
 
     return <GroupActions
       config={config}
@@ -199,6 +201,7 @@ export class BasicGroup extends PureComponent {
       isTrueLocked={isTrueLocked}
       id={id}
       tree={tree}
+      searchObject={searchObject}
     />;
   }
 
@@ -218,13 +221,13 @@ export class BasicGroup extends PureComponent {
   }
 
   renderChildren() {
-    const {children1} = this.props;
+    const { children1 } = this.props;
     return children1 ? children1.map(this.renderItem).toList() : null;
   }
 
   renderItem(item) {
     const props = this.props;
-    const {config, actions, onDragStart, isLocked} = props;
+    const { config, actions, onDragStart, isLocked } = props;
     const isRuleGroup = item.get("type") == "group" && item.getIn(["properties", "field"]) != null;
     const type = isRuleGroup ? "rule_group" : item.get("type");
     return (
@@ -246,6 +249,7 @@ export class BasicGroup extends PureComponent {
         isDraggingTempo={this.props.isDraggingTempo}
         isParentLocked={isLocked}
         tree={this.props.tree}
+        searchObject={this.props.searchObject}
       />
     );
   }
@@ -296,10 +300,10 @@ export class BasicGroup extends PureComponent {
     const {
       config, children1, id,
       selectedConjunction, setConjunction, not, setNot, isLocked,
-      tree
+      tree, searchObject
     } = this.props;
 
-    const {immutableGroupsMode, renderConjs: Conjs, showNot: _showNot, notLabel} = config.settings;
+    const { immutableGroupsMode, renderConjs: Conjs, showNot: _showNot, notLabel } = config.settings;
     const conjunctionOptions = this.conjunctionOptions();
     if (!this.showConjs())
       return null;
@@ -319,7 +323,8 @@ export class BasicGroup extends PureComponent {
       notLabel: notLabel,
       showNot: this.showNot(),
       isLocked: isLocked,
-      tree: tree
+      tree: tree,
+      searchObject: searchObject
     };
     return <Conjs {...renderProps} />;
   }

@@ -34,8 +34,6 @@ class Rule extends PureComponent {
     valueError: PropTypes.any,
     isLocked: PropTypes.bool,
     isTrueLocked: PropTypes.bool,
-    //path: PropTypes.instanceOf(Immutable.List),
-    //actions
     handleDraggerMouseDown: PropTypes.func,
     setField: PropTypes.func,
     setOperator: PropTypes.func,
@@ -45,7 +43,8 @@ class Rule extends PureComponent {
     setValue: PropTypes.func,
     setValueSrc: PropTypes.func,
     reordableNodesCnt: PropTypes.number,
-    tree: PropTypes.any
+    tree: PropTypes.any,
+    searchObject: PropTypes.func,
   };
 
   constructor(props) {
@@ -131,6 +130,7 @@ class Rule extends PureComponent {
       readonly={immutableFieldsMode || isLocked}
       id={this.props.id}
       groupId={this.props.groupId}
+      searchObject={this.props.searchObject}
     />;
   }
   renderWidget() {
@@ -148,6 +148,7 @@ class Rule extends PureComponent {
       readonly={immutableFieldsMode || isLocked}
       id={this.props.id}
       groupId={this.props.groupId}
+      searchObject={this.props.searchObject}
     />;
   }
 

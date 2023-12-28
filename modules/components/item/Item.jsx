@@ -27,8 +27,8 @@ const getProperties = (props) => {
   return result;
 };
 const typeMap = {
-  rule: (props) => (
-    <Rule
+  rule: (props) => {
+    return <Rule
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -42,8 +42,9 @@ const typeMap = {
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
-  ),
+  },
   group: (props) => (
     <Group
       {...getProperties(props)}
@@ -60,6 +61,7 @@ const typeMap = {
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
   ),
   rule_group: (props) => (
@@ -78,6 +80,7 @@ const typeMap = {
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
   ),
   rule_group_ext: (props) => (
@@ -96,6 +99,7 @@ const typeMap = {
       parentField={props.parentField}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
   ),
   switch_group: (props) => (
@@ -114,6 +118,7 @@ const typeMap = {
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
   ),
   case_group: (props) => (
@@ -132,6 +137,7 @@ const typeMap = {
       parentField={null}
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
+      searchObject={props.searchObject}
     />
   ),
 };
@@ -139,7 +145,6 @@ const typeMap = {
 
 class Item extends PureComponent {
   static propTypes = {
-    //tree: PropTypes.instanceOf(Immutable.Map).isRequired,
     config: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     groupId: PropTypes.string,
@@ -153,6 +158,8 @@ class Item extends PureComponent {
     parentField: PropTypes.string, //from RuleGroup
     isDraggingTempo: PropTypes.bool,
     isParentLocked: PropTypes.bool,
+    tree: PropTypes.any,
+    searchObject: PropTypes.func,
   };
 
   render() {

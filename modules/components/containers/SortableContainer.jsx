@@ -14,9 +14,9 @@ let _isReorderingTree = false;
 const createSortableContainer = (Builder, CanMoveFn = null) => 
   class SortableContainer extends Component {
     static propTypes = {
-      tree: PropTypes.any.isRequired, //instanceOf(Immutable.Map)
-      actions: PropTypes.object.isRequired, // {moveItem: Function, ..}
-      //... see Builder
+      tree: PropTypes.any.isRequired,
+      actions: PropTypes.object.isRequired,
+      searchObject: PropTypes.func
     };
 
     constructor(props) {

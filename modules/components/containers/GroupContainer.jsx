@@ -10,7 +10,6 @@ import {defaultGroupConjunction} from "../../utils/defaultUtils";
 const createGroupContainer = (Group) => 
   class GroupContainer extends Component {
     static propTypes = {
-      //tree: PropTypes.instanceOf(Immutable.Map).isRequired,
       config: PropTypes.object.isRequired,
       actions: PropTypes.object.isRequired, //{setConjunction: Funciton, removeGroup, addGroup, addRule, ...}
       path: PropTypes.any.isRequired, //instanceOf(Immutable.List)
@@ -28,7 +27,8 @@ const createGroupContainer = (Group) =>
       //connected:
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
-      tree: PropTypes.any
+      tree: PropTypes.any,
+      searchObject: PropTypes.func
     };
 
     constructor(props) {
@@ -183,6 +183,7 @@ const createGroupContainer = (Group) =>
               children1={this.props.children1}
               actions={this.props.actions}
               tree={this.props.tree}
+              searchObject={this.props.searchObject}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
@@ -229,6 +230,7 @@ const createGroupContainer = (Group) =>
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
+              searchObject={this.props.searchObject}
             />
           ]}
         </div>
@@ -243,7 +245,7 @@ export default (Group) => {
     (state) => {
       return {
         dragging: state.dragging,
-        tree: state.tree
+        tree: state.tree,
       };
     },
     null,

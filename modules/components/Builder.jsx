@@ -15,6 +15,7 @@ export default class Builder extends Component {
     config: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     onDragStart: PropTypes.func,
+    searchObject: PropTypes.func,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -70,6 +71,7 @@ export default class Builder extends Component {
         parentReordableNodesCnt={0}
         onDragStart={this.props.onDragStart}
         tree={tree}
+        searchObject={this.props.searchObject}
       />
     );
   }

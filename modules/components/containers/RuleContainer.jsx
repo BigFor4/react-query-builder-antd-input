@@ -30,6 +30,7 @@ const createRuleContainer = (Rule) =>
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
       tree: PropTypes.any,
+      searchObject: PropTypes.func
     };
 
     constructor(props) {
@@ -139,6 +140,7 @@ const createRuleContainer = (Rule) =>
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
+              searchObject={this.props.searchObject}
             /> : null
             ,
             <Rule
@@ -170,6 +172,7 @@ const createRuleContainer = (Rule) =>
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
+              searchObject={this.props.searchObject}
             />
           ]}
         </div>

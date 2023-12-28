@@ -78,7 +78,6 @@ export default class QueryContainer extends Component {
   }
 
   render() {
-    // `get_children` is deprecated!
     const {renderBuilder, get_children, onChange, settings} = this.props;
     const {config, store} = this.state;
     const {renderProvider: QueryWrapper} = settings;
@@ -91,7 +90,7 @@ export default class QueryContainer extends Component {
             getMemoizedTree={this.getMemoizedTree}
             onChange={onChange}
             renderBuilder={renderBuilder || get_children}
-          />
+                      />
         </Provider>
       </QueryWrapper>
     );
