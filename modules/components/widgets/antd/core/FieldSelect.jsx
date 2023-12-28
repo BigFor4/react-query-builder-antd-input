@@ -102,7 +102,7 @@ export default class FieldSelect extends PureComponent {
       <Select
         dropdownAlign={dropdownAlign}
         dropdownMatchSelectWidth={false}
-        style={{ width: 150 }}
+        style={{ width: 150, marginLeft: 10 }}
         placeholder={placeholder}
         onChange={this.onChange}
         value={selectedKey || undefined}
@@ -117,7 +117,7 @@ export default class FieldSelect extends PureComponent {
       disabled={readonly}
       {...customProps}></Input> : <Select
         allowClear
-        style={{ width: 150 }}
+        style={{ width: 150, marginLeft: 10 }}
         disabled={readonly}
         showSearch
         value={selectedKey || undefined}
