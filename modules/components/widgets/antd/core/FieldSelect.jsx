@@ -29,7 +29,7 @@ export default class FieldSelect extends PureComponent {
     lastFetchId: 0,
     fetching: false,
     dropdown: false,
-    searchValue: ''
+    searchValue: this.props.selectedKey?.toString() || null
   };
 
   onChange = (key) => {
@@ -95,7 +95,6 @@ export default class FieldSelect extends PureComponent {
       selectedKey, selectedLabel, selectedAltLabel, selectedFullLabel, readonly,
       isValue
     } = this.props;
-
     const dropdownPlacement = config.settings.dropdownPlacement;
     const dropdownAlign = dropdownPlacement ? BUILT_IN_PLACEMENTS[dropdownPlacement] : undefined;
     let tooltipText = selectedAltLabel || selectedFullLabel;
@@ -124,7 +123,6 @@ export default class FieldSelect extends PureComponent {
         allowClear
         style={{ width: 150 }}
         disabled={readonly}
-        labelInValue={true}
         showSearch
         value={selectedKey || undefined}
         optionFilterProp="children"
