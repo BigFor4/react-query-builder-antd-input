@@ -85,16 +85,14 @@ const DemoQueryBuilder: React.FC = () => {
     initTree = _initTree;
     initValue = _initValue;
   };
-  const searchObject = async (value) => {
-    return []
-  };
+
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (
       <div className="query-builder-container">
         <div className="query-builder qb-lite">
           <Builder {...bprops}
-            // searchObject={searchObject}
+            searchObject={searchObject}
           />
         </div>
       </div>
@@ -127,6 +125,28 @@ const DemoQueryBuilder: React.FC = () => {
         </div>
       </div>
     );
+  };
+  const searchObject = async (value) => {
+    try {
+      const response = await axios.post('https://testapi.xd-twin.io/searchObjectInfor', {
+        projectId: '655c8616c070a1001264a8f8',
+        search: value
+      },{
+        headers: {
+          Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGQzNTgyYzllNDNmMDAxMmEyMWQ0YSIsImlhdCI6MTcwMzc1MzE2MiwiZXhwIjoxNzA2MzQ1MTYyfQ.lBphR-qdLuJTS11x3Pi4mkefZW-oNN7NWFSy9yzZ1AM",
+          },
+      });
+      if (response.data) {
+        return response.data;
+      } else {
+        console.error('Unexpected response structure:', response);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error in searchObject:', error);
+      return [];
+    }
   };
 
   return (

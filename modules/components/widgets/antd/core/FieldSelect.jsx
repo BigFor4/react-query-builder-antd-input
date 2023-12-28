@@ -33,11 +33,7 @@ export default class FieldSelect extends PureComponent {
   };
 
   onChange = (key) => {
-    if (typeof key === 'string') {
-      this.props.setField(key);
-    } else if (key?.label) {
-      this.props.setField(key.label);
-    }
+    this.props.setField(key);
   };
 
   onChangeInput = (e) => {
@@ -55,7 +51,7 @@ export default class FieldSelect extends PureComponent {
   };
 
   handleSearchObjectInfo = debounce(async (value) => {
-    this.setState({ listProjectOption: [], fetching: true, searchValue: value });
+    this.setState({ listProjectOption: [], fetching: true, searchValue: value || null });
     this.props.setField(value);
     if (value && value !== "") {
       this.setState((prevState) => ({ lastFetchId: prevState.lastFetchId + 1 }));
@@ -135,9 +131,13 @@ export default class FieldSelect extends PureComponent {
         onFocus={() => this.setState({ dropdown: true })}
         onBlur={() => this.setState({ dropdown: false })}
         onDropdownVisibleChange={this.handleClick}
+        onClear={() => {
+          this.setState({ searchValue: '' })
+          this.props.setField('');
+        }}
       >
       {
-        this.state.searchValue ? <Option label={this.state.searchValue} key={'searchValue'}>
+        this.state.searchValue ? <Option label={this.state.searchValue} key={'searchValue'} value={this.state.searchValue}>
           {this.state.searchValue}
         </Option> : null
       }
