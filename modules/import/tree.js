@@ -103,7 +103,7 @@ function convertRule(node) {
     properties: {
       field: attribute,
       operator: getOperator(condition),
-      value: [value.toString()],
+      value: [value?.toString() || ''],
       valueSrc: [null],
       valueError: [null],
       valueType: [null]
@@ -118,11 +118,8 @@ const parseConditionString = (conditionString) => {
     const attribute = match[2].trim();
     const condition = match[3] === '=' ? '==' : match[3];
     let value = match[4].trim();
-    if (!attribute || !condition || !value) {
+    if (!attribute || !condition) {
       return {};
-    }
-    if (!isNaN(value)) {
-      value = parseFloat(value);
     }
     return { attribute, condition, value };
   }
@@ -135,7 +132,7 @@ function convertGroup(node) {
     children1: node?.children?.map(convertNode),
     properties: {
       conjunction: node?.title?.toUpperCase(),
-      not: node.title === "NOT"
+      not: node?.title === "NOT"
     }
   };
   return group;
