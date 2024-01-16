@@ -16,6 +16,7 @@ export default class Builder extends Component {
     actions: PropTypes.object.isRequired,
     onDragStart: PropTypes.func,
     searchObject: PropTypes.func,
+    treeProject: PropTypes.object,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -72,6 +73,7 @@ export default class Builder extends Component {
         onDragStart={this.props.onDragStart}
         tree={tree}
         searchObject={this.props.searchObject}
+        treeProject={this.props.treeProject}
       />
     );
   }

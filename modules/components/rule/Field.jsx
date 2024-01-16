@@ -20,6 +20,7 @@ export default class Field extends PureComponent {
     isValue: PropTypes.bool,
     searchObject: PropTypes.func,
     setField: PropTypes.func.isRequired,
+    treeProject: PropTypes.object,
   };
 
   constructor(props) {
@@ -125,7 +126,7 @@ export default class Field extends PureComponent {
   }
 
   render() {
-    const {config, customProps, setField, readonly, id, groupId, searchObject, isValue} = this.props;
+    const {config, customProps, setField, readonly, id, groupId, searchObject, isValue, treeProject} = this.props;
     const {renderField} = config.settings;
     const renderProps = {
       id,
@@ -135,6 +136,7 @@ export default class Field extends PureComponent {
       readonly,
       setField,
       searchObject,
+      treeProject,
       isValue,
       ...this.meta
     };

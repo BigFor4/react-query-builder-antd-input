@@ -22,6 +22,7 @@ export default class FieldSelect extends PureComponent {
     setField: PropTypes.func.isRequired,
     searchObject: PropTypes.func,
     isValue: PropTypes.bool,
+    treeProject: PropTypes.object,
   };
 
   state = {
@@ -89,7 +90,7 @@ export default class FieldSelect extends PureComponent {
     const {
       config, customProps, items, placeholder, isSelect,
       selectedKey, selectedLabel, selectedAltLabel, selectedFullLabel, readonly,
-      isValue
+      isValue, treeProject
     } = this.props;
     const dropdownPlacement = config.settings.dropdownPlacement;
     const dropdownAlign = dropdownPlacement ? BUILT_IN_PLACEMENTS[dropdownPlacement] : undefined;

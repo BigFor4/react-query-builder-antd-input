@@ -45,6 +45,7 @@ class Rule extends PureComponent {
     reordableNodesCnt: PropTypes.number,
     tree: PropTypes.any,
     searchObject: PropTypes.func,
+    treeProject: PropTypes.object,
   };
 
   constructor(props) {
@@ -131,6 +132,7 @@ class Rule extends PureComponent {
       id={this.props.id}
       groupId={this.props.groupId}
       searchObject={this.props.searchObject}
+      treeProject={this.props.treeProject}
     />;
   }
   renderWidget() {
@@ -149,6 +151,7 @@ class Rule extends PureComponent {
       id={this.props.id}
       groupId={this.props.groupId}
       searchObject={this.props.searchObject}
+      treeProject={this.props.treeProject}
     />;
   }
 

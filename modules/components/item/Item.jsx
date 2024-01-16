@@ -43,6 +43,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   },
   group: (props) => (
@@ -62,6 +63,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   ),
   rule_group: (props) => (
@@ -81,6 +83,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   ),
   rule_group_ext: (props) => (
@@ -100,6 +103,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   ),
   switch_group: (props) => (
@@ -119,6 +123,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   ),
   case_group: (props) => (
@@ -138,6 +143,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      treeProject={props.treeProject}
     />
   ),
 };
@@ -160,6 +166,7 @@ class Item extends PureComponent {
     isParentLocked: PropTypes.bool,
     tree: PropTypes.any,
     searchObject: PropTypes.func,
+    treeProject: PropTypes.object,
   };
 
   render() {

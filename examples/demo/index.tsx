@@ -6,7 +6,7 @@ import {
 import throttle from "lodash/throttle";
 import loadConfig from "./config";
 import axios from "axios";
-import loadedInitValue from "./init_value";
+import { treeProject } from "./init_value";
 const stringify = JSON.stringify;
 const { getTree, loadTree, uuid } = Utils;
 const preStyle = { backgroundColor: "darkgrey", margin: "10px", padding: "10px" };
@@ -14,7 +14,6 @@ const preStyle = { backgroundColor: "darkgrey", margin: "10px", padding: "10px" 
 const initialSkin = "antd";
 const emptyInitValue: JsonTree = { id: uuid(), type: "group" };
 const loadedConfig = loadConfig(initialSkin);
-// let initValue: JsonTree = loadedInitValue && Object.keys(loadedInitValue).length > 0 ? loadedInitValue as JsonTree : emptyInitValue;
 let initValue = emptyInitValue;
 let initTree: ImmutableTree;
 initTree = loadTree(initValue);
@@ -85,7 +84,7 @@ const DemoQueryBuilder: React.FC = () => {
     initTree = _initTree;
     initValue = _initValue;
   };
-
+  console.log(treeProject)
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (
@@ -93,6 +92,7 @@ const DemoQueryBuilder: React.FC = () => {
         <div className="query-builder qb-lite">
           <Builder {...bprops}
             searchObject={searchObject}
+            treeProject={treeProject}
           />
         </div>
       </div>
@@ -131,11 +131,11 @@ const DemoQueryBuilder: React.FC = () => {
       const response = await axios.post('https://testapi.xd-twin.io/searchObjectInfor', {
         projectId: '655c8616c070a1001264a8f8',
         search: value
-      },{
+      }, {
         headers: {
           Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGQzNTgyYzllNDNmMDAxMmEyMWQ0YSIsImlhdCI6MTcwMzc1MzE2MiwiZXhwIjoxNzA2MzQ1MTYyfQ.lBphR-qdLuJTS11x3Pi4mkefZW-oNN7NWFSy9yzZ1AM",
-          },
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGQzNTgyYzllNDNmMDAxMmEyMWQ0YSIsImlhdCI6MTcwMzc1MzE2MiwiZXhwIjoxNzA2MzQ1MTYyfQ.lBphR-qdLuJTS11x3Pi4mkefZW-oNN7NWFSy9yzZ1AM",
+        },
       });
       if (response.data) {
         return response.data;

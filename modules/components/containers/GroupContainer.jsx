@@ -28,7 +28,8 @@ const createGroupContainer = (Group) =>
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
       tree: PropTypes.any,
-      searchObject: PropTypes.func
+      searchObject: PropTypes.func,
+      treeProject: PropTypes.object,
     };
 
     constructor(props) {
@@ -184,6 +185,7 @@ const createGroupContainer = (Group) =>
               actions={this.props.actions}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              treeProject={this.props.treeProject}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
               selectedField={this.props.field || null}
@@ -231,6 +233,7 @@ const createGroupContainer = (Group) =>
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              treeProject={this.props.treeProject}
             />
           ]}
         </div>

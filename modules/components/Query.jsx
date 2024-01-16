@@ -13,7 +13,8 @@ class Query extends Component {
     onChange: PropTypes.func,
     renderBuilder: PropTypes.func,
     tree: PropTypes.any,
-    searchObject: PropTypes.func
+    searchObject: PropTypes.func,
+    treeProject: PropTypes.object,
   };
 
   constructor(props) {

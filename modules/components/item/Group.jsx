@@ -39,7 +39,8 @@ export class BasicGroup extends PureComponent {
     setLock: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
     tree: PropTypes.any,
-    searchObject: PropTypes.func
+    searchObject: PropTypes.func,
+    treeProject: PropTypes.object,
   };
 
   constructor(props) {
@@ -186,7 +187,7 @@ export class BasicGroup extends PureComponent {
   };
 
   renderActions() {
-    const { config, addRule, addGroup, isLocked, isTrueLocked, id, tree, searchObject } = this.props;
+    const { config, addRule, addGroup, isLocked, isTrueLocked, id, tree, searchObject, treeProject } = this.props;
 
     return <GroupActions
       config={config}
@@ -202,6 +203,7 @@ export class BasicGroup extends PureComponent {
       id={id}
       tree={tree}
       searchObject={searchObject}
+      treeProject={treeProject}
     />;
   }
 
@@ -250,6 +252,7 @@ export class BasicGroup extends PureComponent {
         isParentLocked={isLocked}
         tree={this.props.tree}
         searchObject={this.props.searchObject}
+        treeProject={this.props.treeProject}
       />
     );
   }
@@ -300,7 +303,7 @@ export class BasicGroup extends PureComponent {
     const {
       config, children1, id,
       selectedConjunction, setConjunction, not, setNot, isLocked,
-      tree, searchObject
+      tree, searchObject, treeProject
     } = this.props;
 
     const { immutableGroupsMode, renderConjs: Conjs, showNot: _showNot, notLabel } = config.settings;
@@ -324,7 +327,8 @@ export class BasicGroup extends PureComponent {
       showNot: this.showNot(),
       isLocked: isLocked,
       tree: tree,
-      searchObject: searchObject
+      searchObject: searchObject,
+      treeProject: treeProject
     };
     return <Conjs {...renderProps} />;
   }
