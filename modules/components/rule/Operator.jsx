@@ -150,7 +150,7 @@ export default class Operator extends PureComponent {
       customProps,
       readonly,
       setField: setOperator,
-      isSelect:true,
+      isValue: 'operator',
       ...this.meta
     };
     if (!renderProps.items)

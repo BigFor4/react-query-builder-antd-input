@@ -117,6 +117,25 @@ class Rule extends PureComponent {
       && this.props.value.filter((val) => val !== undefined).size > 0
     );
   }
+  renderType() {
+    const { config, isLocked } = this.props;
+    const { immutableFieldsMode } = config.settings;
+    const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0] : this.props.value?.toJS()?.[0] : '';
+    return <FieldWrapper
+      key="type"
+      classname={"rule--value"}
+      config={config}
+      selectedField={value}
+      isValue={'type'}
+      setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
+      parentField={this.props.parentField}
+      readonly={immutableFieldsMode || isLocked}
+      id={this.props.id}
+      groupId={this.props.groupId}
+      searchObject={this.props.searchObject}
+      treeProject={this.props.treeProject}
+    />;
+  }
 
   renderField() {
     const { config, isLocked } = this.props;
@@ -125,6 +144,7 @@ class Rule extends PureComponent {
       key="field"
       classname={"rule--field"}
       config={config}
+      isValue={'attribute'}
       selectedField={this.props.selectedField}
       setField={!immutableFieldsMode ? this.props.setField : dummyFn}
       parentField={this.props.parentField}
@@ -144,7 +164,7 @@ class Rule extends PureComponent {
       classname={"rule--value"}
       config={config}
       selectedField={value}
-      isValue={true}
+      isValue={'value'}
       setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
       parentField={this.props.parentField}
       readonly={immutableFieldsMode || isLocked}
@@ -276,6 +296,7 @@ class Rule extends PureComponent {
     const { renderButtonGroup: BtnGrp } = config.settings;
 
     const parts = [
+      this.renderType(),
       this.renderField(),
       this.renderOperator(),
       this.renderBeforeWidget(),

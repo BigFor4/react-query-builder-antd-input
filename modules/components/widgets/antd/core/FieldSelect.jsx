@@ -34,7 +34,7 @@ export default class FieldSelect extends PureComponent {
   };
 
   onChange = (key) => {
-    this.props.setField(key);
+    this.props.setField(key, this.props.isValue);
   };
 
   onChangeInput = (e) => {
@@ -88,7 +88,7 @@ export default class FieldSelect extends PureComponent {
 
   render() {
     const {
-      config, customProps, items, placeholder, isSelect,
+      config, customProps, items, placeholder,
       selectedKey, selectedLabel, selectedAltLabel, selectedFullLabel, readonly,
       isValue, treeProject
     } = this.props;
@@ -99,57 +99,101 @@ export default class FieldSelect extends PureComponent {
       tooltipText = null;
 
     const fieldSelectItems = this.renderSelectItems(items);
-    let res = isSelect ? (
-      <Select
-        dropdownAlign={dropdownAlign}
-        dropdownMatchSelectWidth={false}
-        style={{ width: 150, marginLeft: 10 }}
-        placeholder={placeholder}
-        onChange={this.onChange}
-        value={selectedKey || undefined}
-        filterOption={this.filterOption}
-        disabled={readonly}
-        {...customProps}
-      >{fieldSelectItems}</Select>
-    ) : isValue || !this.props.searchObject ? <Input style={{ width: 150, marginLeft: 10 }}
-      placeholder={placeholder}
-      onChange={this.onChangeInput}
-      value={selectedKey || undefined}
-      disabled={readonly}
-      {...customProps}></Input> : <Select
-        allowClear
-        style={{ width: 150, marginLeft: 10 }}
-        disabled={readonly}
-        showSearch
-        value={selectedKey || undefined}
-        optionFilterProp="children"
-        placeholder={placeholder}
-        notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
-        filterOption={false}
-        onChange={this.onChange}
-        onSearch={this.handleSearchObjectInfo}
-        open={this.state.dropdown}
-        onFocus={() => this.setState({ dropdown: true })}
-        onBlur={() => this.setState({ dropdown: false })}
-        onDropdownVisibleChange={this.handleClick}
-        onClear={() => {
-          this.setState({ searchValue: '' })
-          this.props.setField('');
-        }}
-      >
-      {
-        this.state.searchValue ? <Option label={this.state.searchValue} key={'searchValue'} value={this.state.searchValue}>
-          {this.state.searchValue}
-        </Option> : null
-      }
-      {this.state.listProjectOption &&
-        this.state.listProjectOption.map(d => (
-          <Option label={this.splitTextObjectInfo(d.inf)} key={d?._id || d?.id} value={d?._id || d?.id}>
-            {this.splitTextObjectInfo(d.inf)}
-          </Option>
-        ))}
-    </Select>;
+    let res;
+    switch (true) {
+      case isValue === 'type':
+        res = (
+          <Select
+            dropdownAlign={dropdownAlign}
+            dropdownMatchSelectWidth={false}
+            style={{ width: 150, marginLeft: 10 }}
+            placeholder={'Type'}
+            onChange={this.onChange}
+            value={selectedKey || undefined}
+            filterOption={this.filterOption}
+            disabled={readonly}
+            {...customProps}
+          >
+            <Option label={'Attribute'} key={'attribute'} value={'attribute'}>
+              Attribute
+            </Option>
+            <Option label={'Folder'} key={'folder'} value={'folder'}>
+              Folder
+            </Option>
+          </Select>
+        );
+        break;
+      case isValue === 'operator':
+        res = (
+          <Select
+            dropdownAlign={dropdownAlign}
+            dropdownMatchSelectWidth={false}
+            style={{ width: 150, marginLeft: 10 }}
+            placeholder={placeholder}
+            onChange={this.onChange}
+            value={selectedKey || undefined}
+            filterOption={this.filterOption}
+            disabled={readonly}
+            {...customProps}
+          >
+            {fieldSelectItems}
+          </Select>
+        );
+        break;
+      case (isValue === 'value' || !this.props.searchObject):
+        res = (
+          <Input
+            style={{ width: 150, marginLeft: 10 }}
+            placeholder={placeholder}
+            onChange={this.onChangeInput}
+            value={selectedKey || undefined}
+            disabled={readonly}
+            {...customProps}
+          />
+        );
+        break;
 
+      case isValue === 'attribute':
+        res = (
+          <Select
+            allowClear
+            style={{ width: 150, marginLeft: 10 }}
+            disabled={readonly}
+            showSearch
+            value={selectedKey || undefined}
+            optionFilterProp="children"
+            placeholder={placeholder}
+            notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
+            filterOption={false}
+            onChange={this.onChange}
+            onSearch={this.handleSearchObjectInfo}
+            open={this.state.dropdown}
+            onFocus={() => this.setState({ dropdown: true })}
+            onBlur={() => this.setState({ dropdown: false })}
+            onDropdownVisibleChange={this.handleClick}
+            onClear={() => {
+              this.setState({ searchValue: '' });
+              this.props.setField('');
+            }}
+          >
+            {this.state.searchValue ? (
+              <Option label={this.state.searchValue} key={'searchValue'} value={this.state.searchValue}>
+                {this.state.searchValue}
+              </Option>
+            ) : null}
+            {this.state.listProjectOption &&
+              this.state.listProjectOption.map((d) => (
+                <Option label={this.splitTextObjectInfo(d.inf)} key={d?._id || d?.id} value={d?._id || d?.id}>
+                  {this.splitTextObjectInfo(d.inf)}
+                </Option>
+              ))}
+          </Select>
+        );
+        break;
+      default:
+        res = <div></div>
+        break
+    }
     return res;
   }
 

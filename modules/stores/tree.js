@@ -465,6 +465,7 @@ const setOperator = (state, path, newOperator, config) => {
  * @param {boolean} __isInternal
  */
 const setValue = (state, path, newField, config) => {
+  debugger
   const { fieldSeparator, setOpOnChangeField, showErrorMessage } = config.settings;
   if (Array.isArray(newField))
     newField = newField.join(fieldSeparator);

@@ -137,6 +137,7 @@ const createGroupContainer = (Group) =>
     };
 
     setValue = (delta, value, type) => {
+      debugger
       this.props.actions.setValue(this.props.path, delta, value, type);
     };
 
