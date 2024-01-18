@@ -207,7 +207,7 @@ export const getFieldPath = (field, config, onlyKeys = false) => {
   if (!field)
     return null;
   const fieldSeparator = config.settings.fieldSeparator;
-  const parts = Array.isArray(field) ? field : field?.split(fieldSeparator);
+  const parts = Array.isArray(field) ? field : typeof field === 'string' ? field?.split(fieldSeparator) : [];;
   if (onlyKeys)
     return parts;
   else
@@ -224,7 +224,7 @@ export const getFieldPathLabels = (field, config, parentField = null, fieldsKey 
   if (!field)
     return null;
   const fieldSeparator = config.settings.fieldSeparator;
-  const parts = Array.isArray(field) ? field : field?.split(fieldSeparator);
+  const parts = Array.isArray(field) ? field : typeof field === 'string' ? field?.split(fieldSeparator) : [];;
   const parentParts = parentField ? (Array.isArray(parentField) ? parentField : parentField.split(fieldSeparator)) : [];
   return parts
     .slice(parentParts.length)
@@ -242,7 +242,7 @@ export const getFieldPartsConfigs = (field, config, parentField = null) => {
     return null;
   const parentFieldDef = parentField && getFieldRawConfig(config, parentField) || null;
   const fieldSeparator = config.settings.fieldSeparator;
-  const parts = Array.isArray(field) ? field : field?.split(fieldSeparator);
+  const parts = Array.isArray(field) ? field : typeof field === 'string' ? field?.split(fieldSeparator) : [];;
   const parentParts = parentField ? (Array.isArray(parentField) ? parentField : parentField.split(fieldSeparator)) : [];
   return parts
     .slice(parentParts.length)

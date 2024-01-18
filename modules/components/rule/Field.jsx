@@ -68,11 +68,11 @@ export default class Field extends PureComponent {
     };
   }
 
-  getFieldLabel(fieldOpts, fieldKey, config) {
-    if (!fieldKey) return null;
+  getFieldLabel(fieldOpts, field, config) {
+    if (!field) return null;
     let fieldSeparator = config.settings.fieldSeparator;
     let maxLabelsLength = config.settings.maxLabelsLength;
-    let fieldParts = Array.isArray(fieldKey) ? fieldKey : fieldKey.split(fieldSeparator);
+    const fieldParts = Array.isArray(field) ? field : typeof field === 'string' ? field?.split(fieldSeparator) : [];
     let label = fieldOpts && fieldOpts.label || last(fieldParts);
     label = truncateString(label, maxLabelsLength);
     return label;

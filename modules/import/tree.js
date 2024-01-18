@@ -34,12 +34,14 @@ function convertJson(inputJson) {
   function convertRule(rule) {
     const operatorLabel = operatorLabels[rule?.properties?.operator]?.label || '';
     const field = rule?.properties?.field || '';
-    const value = rule?.properties?.value?.[0] || '';
-
+    const value = rule?.properties?.value?.[0]?.value || '';
+    const type = rule?.properties?.value?.[0]?.type || '';
+    const arrayModel = rule?.properties?.value?.[0]?.arrayModel || '';
     if (operatorLabel && field && value !== null && value !== undefined) {
       return {
         title: `Attribute.${field} ${operatorLabel} ${value}`,
-        type: 'attribute',
+        type,
+        arrayModel: arrayModel || []
       };
     } else {
       return null;
@@ -97,13 +99,18 @@ export const findObjectById = (root, targetId) => {
 }
 function convertRule(node) {
   let { attribute, condition, value } = parseConditionString(node.title);
+  const valueData = {
+    value: value?.toString() || '',
+    type: node.type,
+    arrayModel: node.arrayModel
+  }
   const rule = {
     type: "rule",
     id: uuid(),
     properties: {
       field: attribute,
       operator: getOperator(condition),
-      value: [value?.toString() || ''],
+      value: [valueData],
       valueSrc: [null],
       valueError: [null],
       valueType: [null]

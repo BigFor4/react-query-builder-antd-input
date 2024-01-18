@@ -120,7 +120,7 @@ class Rule extends PureComponent {
   renderType() {
     const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
-    const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0] : this.props.value?.toJS()?.[0] : '';
+    const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
     return <FieldWrapper
       key="type"
       classname={"rule--value"}
@@ -158,7 +158,7 @@ class Rule extends PureComponent {
   renderWidget() {
     const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
-    const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0] : this.props.value?.toJS()?.[0] : '';
+    const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.value : this.props.value?.toJS()?.[0]?.value : '';
     return <FieldWrapper
       key="values"
       classname={"rule--value"}

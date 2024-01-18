@@ -464,12 +464,11 @@ const setOperator = (state, path, newOperator, config) => {
  * @param {*} asyncListValues
  * @param {boolean} __isInternal
  */
-const setValue = (state, path, newField, config) => {
-  debugger
-  const { fieldSeparator, setOpOnChangeField, showErrorMessage } = config.settings;
-  if (Array.isArray(newField))
-    newField = newField.join(fieldSeparator);
-
+const setValue = (state, path, dataUpdate, config) => {
+  const {showErrorMessage } = config.settings;
+  let newField = dataUpdate?.value || dataUpdate;
+  const typeUpdate = dataUpdate?.type;
+  const arrayModel = dataUpdate?.arrayModel;
   const currentType = state.getIn(expandTreePath(path, "type"));
   const wasRuleGroup = currentType == "rule_group";
   const pathJS = path.toJS();
@@ -484,7 +483,12 @@ const setValue = (state, path, newField, config) => {
   let newOperator = '';
   let field = '';
   if (newFieldConfig?.properties) {
-    valueField = new Immutable.fromJS([newField]);
+    let dataValue = newFieldConfig.properties.value?.[0] || {};
+    dataValue[typeUpdate] = newField;
+    if (typeUpdate === 'type') {
+      dataValue.arrayModel = arrayModel || [];
+    }
+    valueField = new Immutable.fromJS([dataValue]);
     newOperator = newFieldConfig.properties.operator;
     field = newFieldConfig.properties.field;
   }

@@ -1,10 +1,32 @@
 import React, { PureComponent } from "react";
-import { Tooltip, Select, Input, Spin } from "antd";
+import { Tooltip, Select, Input, Spin, Button, Tree, Modal, Empty } from "antd";
 import { BUILT_IN_PLACEMENTS } from "../../../../utils/domUtils";
-import PropTypes from "prop-types";
+import PropTypes, { array } from "prop-types";
 import debounce from 'lodash/debounce';
 const { Option, OptGroup } = Select;
+const { DirectoryTree } = Tree
 
+const isModel = (node) => {
+  return !node ? false : (node && node.modelId) ? true : false;
+}
+
+const traversalTree = (data, parentKey) => {
+  return data.map(item => {
+    if (item.children) {
+      return {
+        ...item,
+        children: traversalTree(item.children, item.key),
+        parentKey,
+        isLeaf: isModel(item) ? true : item.isLeaf,
+      };
+    }
+    return {
+      ...item,
+      parentKey,
+      isLeaf: isModel(item) ? true : item.isLeaf,
+    };
+  });
+}
 export default class FieldSelect extends PureComponent {
   static propTypes = {
     config: PropTypes.object.isRequired,
@@ -30,16 +52,30 @@ export default class FieldSelect extends PureComponent {
     lastFetchId: 0,
     fetching: false,
     dropdown: false,
-    searchValue: this.props.selectedKey?.toString() || null
+    searchValue: this.props.selectedKey?.toString() || null,
+    type: 'attribute',
+    modelVisible: false,
+    checkedNodes: [],
+    checkedNodesOld: [],
   };
-
-  onChange = (key) => {
-    this.props.setField(key, this.props.isValue);
+  onChange = (value) => {
+    if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
+      this.props.setField(value);
+    } else {
+      if (this.props.isValue === 'type') {
+        this.state.type = value;
+      }
+      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes});
+    }
   };
 
   onChangeInput = (e) => {
-    const key = e.target.value;
-    this.props.setField(key);
+    const value = e.target.value;
+    if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
+      this.props.setField(value);
+    } else {
+      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes });
+    }
   };
 
   filterOption = (input, option) => {
@@ -85,6 +121,20 @@ export default class FieldSelect extends PureComponent {
   handleClick = () => {
     this.setState((prevState) => ({ dropdown: !prevState.dropdown }));
   };
+  onCheck = (checkedKeys) => {
+    console.log(checkedKeys)
+    this.setState({ checkedNodes: checkedKeys })
+  }
+
+  onClickHideShowModal = (data) => {
+    this.setState({ modelVisible: data })
+  }
+
+  onOk = () => {
+    this.setState({ checkedNodesOld: this.state.checkedNodes })
+    this.props.setField({ value: this.props.selectedKey, type: this.props.isValue, arrayModel: this.state.checkedNodes});
+    this.onClickHideShowModal(false)
+  }
 
   render() {
     const {
@@ -97,30 +147,37 @@ export default class FieldSelect extends PureComponent {
     let tooltipText = selectedAltLabel || selectedFullLabel;
     if (tooltipText === selectedLabel)
       tooltipText = null;
-
+    const treeData = traversalTree(treeProject || [])
     const fieldSelectItems = this.renderSelectItems(items);
     let res;
     switch (true) {
       case isValue === 'type':
         res = (
-          <Select
-            dropdownAlign={dropdownAlign}
-            dropdownMatchSelectWidth={false}
-            style={{ width: 150, marginLeft: 10 }}
-            placeholder={'Type'}
-            onChange={this.onChange}
-            value={selectedKey || undefined}
-            filterOption={this.filterOption}
-            disabled={readonly}
-            {...customProps}
-          >
-            <Option label={'Attribute'} key={'attribute'} value={'attribute'}>
-              Attribute
-            </Option>
-            <Option label={'Folder'} key={'folder'} value={'folder'}>
-              Folder
-            </Option>
-          </Select>
+          <>
+            <Select
+              dropdownAlign={dropdownAlign}
+              dropdownMatchSelectWidth={false}
+              style={{ width: 100, marginLeft: 10 }}
+              placeholder={'Type'}
+              onChange={this.onChange}
+              value={selectedKey || undefined}
+              filterOption={this.filterOption}
+              disabled={readonly}
+              {...customProps}
+            >
+              <Option label={'Attribute'} key={'attribute'} value={'attribute'}>
+                Attribute
+              </Option>
+              <Option label={'Folder'} key={'folder'} value={'folder'}>
+                Folder
+              </Option>
+            </Select>
+            {
+              this.state.type === 'folder' && (<Button style={{ marginLeft: 10 }} onClick={() => this.onClickHideShowModal(true)}>
+                Data tree
+              </Button>)
+            }
+          </>
         );
         break;
       case isValue === 'operator':
@@ -144,7 +201,7 @@ export default class FieldSelect extends PureComponent {
         res = (
           <Input
             style={{ width: 150, marginLeft: 10 }}
-            placeholder={placeholder}
+            placeholder={'Value'}
             onChange={this.onChangeInput}
             value={selectedKey || undefined}
             disabled={readonly}
@@ -162,7 +219,7 @@ export default class FieldSelect extends PureComponent {
             showSearch
             value={selectedKey || undefined}
             optionFilterProp="children"
-            placeholder={placeholder}
+            placeholder={'Attribute'}
             notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
             filterOption={false}
             onChange={this.onChange}
@@ -194,7 +251,39 @@ export default class FieldSelect extends PureComponent {
         res = <div></div>
         break
     }
-    return res;
+    return <div>
+      {res}
+      <Modal
+        title="Select 4D Node in Data Tree"
+        centered
+        zIndex={10001}
+        open={this.state.modelVisible}
+        onCancel={() => {
+          this.onClickHideShowModal(false)
+          this.setState({ checkedNodes: this.state.checkedNodesOld })
+        }}
+        onOk={() => this.onOk()}
+        style={{
+          maxHeight: 'calc(100vh - 20px)',
+        }}
+        bodyStyle={{
+          maxHeight: 'calc(100vh - 300px)',
+          overflowY: 'auto',
+        }}>
+        {treeData?.length ? (
+          <DirectoryTree
+            multiple
+            defaultExpandAll
+            checkable
+            checkedKeys={this.state.checkedNodes}
+            treeData={treeData}
+            onCheck={this.onCheck}
+          />
+        ) : (
+          <Empty />
+        )}
+      </Modal>
+    </div>;
   }
 
   renderSelectItems(fields, level = 0) {
