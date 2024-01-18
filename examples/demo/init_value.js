@@ -1,4 +1,4 @@
-export const treeInir =
+export const treeInit =
 {
   "title": "AND",
   "type": "operator",
