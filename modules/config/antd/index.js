@@ -1,4 +1,3 @@
-import en_US from "antd/lib/locale-provider/en_US";
 import AntdWidgets from "../../components/widgets/antd";
 import BasicConfig, { stringifyForDisplay } from "../basic";
 import { getTitleInListValues } from "../../utils/stuff";
@@ -59,8 +58,7 @@ const settings = {
 
   // localization
   locale: {
-    ...BasicConfig.settings.locale,
-    antd: en_US,
+    ...BasicConfig.settings.locale
   },
 
   removeInvalidMultiSelectValuesOnLoad: false, // can be removed manually in UI

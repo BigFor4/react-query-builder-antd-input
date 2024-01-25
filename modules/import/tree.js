@@ -39,7 +39,7 @@ function convertJson(inputJson) {
     const arrayModel = rule?.properties?.value?.[0]?.arrayModel || '';
     if (operatorLabel && field && value !== null && value !== undefined) {
       return {
-        title: `Attribute.${field} ${operatorLabel} ${value}`,
+        title: `Attribute.${field} ${operatorLabel} ${typeof value === 'string' ? value : ''}`,
         type,
         arrayModel: arrayModel || []
       };
