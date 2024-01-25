@@ -160,7 +160,7 @@ export default class FieldSelect extends PureComponent {
               style={{ width: 100, marginLeft: 10 }}
               placeholder={'Type'}
               onChange={this.onChange}
-              value={selectedKey || undefined}
+              value={typeof selectedKey === 'string' ? selectedKey : undefined}
               filterOption={this.filterOption}
               disabled={readonly}
               {...customProps}
@@ -188,7 +188,7 @@ export default class FieldSelect extends PureComponent {
             style={{ width: 150, marginLeft: 10 }}
             placeholder={placeholder}
             onChange={this.onChange}
-            value={selectedKey || undefined}
+            value={typeof selectedKey === 'string' ? selectedKey : undefined}
             filterOption={this.filterOption}
             disabled={readonly}
             {...customProps}
@@ -203,7 +203,7 @@ export default class FieldSelect extends PureComponent {
             style={{ width: 150, marginLeft: 10 }}
             placeholder={'Value'}
             onChange={this.onChangeInput}
-            value={selectedKey || undefined}
+            value={typeof selectedKey === 'string' ? selectedKey : undefined}
             disabled={readonly}
             {...customProps}
           />
@@ -217,7 +217,7 @@ export default class FieldSelect extends PureComponent {
             style={{ width: 150, marginLeft: 10 }}
             disabled={readonly}
             showSearch
-            value={selectedKey || undefined}
+            value={typeof selectedKey === 'string' ? selectedKey : undefined}
             optionFilterProp="children"
             placeholder={'Attribute'}
             notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
