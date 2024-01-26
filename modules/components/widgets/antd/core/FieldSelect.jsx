@@ -44,6 +44,7 @@ export default class FieldSelect extends PureComponent {
     setField: PropTypes.func.isRequired,
     searchObject: PropTypes.func,
     isValue: PropTypes.bool,
+    arrayModel: PropTypes.array,
     treeProject: PropTypes.object,
   };
 
@@ -55,8 +56,8 @@ export default class FieldSelect extends PureComponent {
     searchValue: this.props.selectedKey?.toString() || null,
     type: this.props.selectedKey?.toString() || 'attribute',
     modelVisible: false,
-    checkedNodes: [],
-    checkedNodesOld: [],
+    checkedNodes: Array.isArray(this.props.arrayModel) ? this.props.arrayModel : [],
+    checkedNodesOld: Array.isArray(this.props.arrayModel) ? this.props.arrayModel : [],
   };
   onChange = (value) => {
     if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {

@@ -121,12 +121,14 @@ class Rule extends PureComponent {
     const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
     const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
+    const arrayModel = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.arrayModel : this.props.value?.toJS()?.[0]?.arrayModel : '';
     return <FieldWrapper
       key="type"
       classname={"rule--value"}
       config={config}
       selectedField={value}
       isValue={'type'}
+      arrayModel={arrayModel}
       setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
       parentField={this.props.parentField}
       readonly={immutableFieldsMode || isLocked}
