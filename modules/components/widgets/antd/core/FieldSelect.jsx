@@ -257,6 +257,7 @@ export default class FieldSelect extends PureComponent {
         title="Select 4D Node in Data Tree"
         centered
         zIndex={10001}
+        visible={this.state.modelVisible}
         open={this.state.modelVisible}
         onCancel={() => {
           this.onClickHideShowModal(false)
