@@ -44,7 +44,7 @@ export default class FuncWidget extends PureComponent {
   }
 
   getMeta({config, field, operator, value}) {
-    const funcKey = value ? value.get("func") : null;
+    const funcKey = value ? value?.get("func") : null;
     const funcDefinition = funcKey ? getFuncConfig(config, funcKey) : null;
 
     return {
@@ -76,7 +76,7 @@ export default class FuncWidget extends PureComponent {
 
   renderFuncSelect = () => {
     const {config, field, operator, customProps, value, readonly, parentFuncs, id, groupId, isFuncArg, fieldDefinition} = this.props;
-    const funcKey = value ? value.get("func") : null;
+    const funcKey = value ? value?.get("func") : null;
     const selectProps = {
       value: funcKey,
       setValue: this.setFunc,
@@ -126,9 +126,9 @@ export default class FuncWidget extends PureComponent {
   renderArgVal = (funcKey, argKey, argDefinition) => {
     const {config, field, operator, value, readonly, parentFuncs, id, groupId} = this.props;
     const arg = value ? value.getIn(["args", argKey]) : null;
-    const argVal = arg ? arg.get("value") : undefined;
+    const argVal = arg ? arg?.get("value") : undefined;
     const defaultValueSource = argDefinition.valueSources.length == 1 ? argDefinition.valueSources[0] : undefined;
-    const argValSrc = arg ? (arg.get("valueSrc") || defaultValueSource || "value") : defaultValueSource;
+    const argValSrc = arg ? (arg?.get("valueSrc") || defaultValueSource || "value") : defaultValueSource;
 
     const widgetProps = {
       config, 

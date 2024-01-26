@@ -46,27 +46,27 @@ export default class Builder extends Component {
   }
 
   _updPath (props) {
-    const id = props.tree.get("id");
+    const id = props?.tree?.get("id");
     this.path = Immutable.List.of(id);
   }
 
   render() {
     const tree = this.props.tree;
-    const rootType = tree.get("type");
+    const rootType = tree?.get("type");
     const isTernary = rootType == "switch_group";
     const reordableNodesCnt = isTernary ? null : getTotalReordableNodesCountInTree(tree);
     const totalRulesCnt = isTernary ? null : getTotalRulesCountInTree(tree);
-    const id = tree.get("id");
+    const id = tree?.get("id");
     return (
       <Item 
         key={id}
         id={id}
         path={this.path}
         type={rootType}
-        properties={tree.get("properties") || new Map()}
+        properties={tree?.get("properties") || new Map()}
         config={this.props.config}
         actions={this.props.actions}
-        children1={tree.get("children1") || new Map()}
+        children1={tree?.get("children1") || new Map()}
         reordableNodesCnt={reordableNodesCnt}
         totalRulesCnt={totalRulesCnt}
         parentReordableNodesCnt={0}

@@ -64,8 +64,8 @@ export const validateTree = (tree, _oldTree, config, oldConfig, removeEmptyGroup
 };
 
 function validateItem (item, path, itemId, meta, c) {
-  const type = item.get("type");
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const children = item?.get("children1");
 
   if ((type === "group" || type === "rule_group" || type == "case_group" || type == "switch_group") && children && children.size) {
     return validateGroup(item, path, itemId, meta, c);
@@ -78,8 +78,8 @@ function validateItem (item, path, itemId, meta, c) {
 
 function validateGroup (item, path, itemId, meta, c) {
   const {removeEmptyGroups} = c;
-  let id = item.get("id");
-  let children = item.get("children1");
+  let id = item?.get("id");
+  let children = item?.get("children1");
   const oldChildren = children;
 
   if (!id && itemId) {
@@ -111,14 +111,14 @@ function validateGroup (item, path, itemId, meta, c) {
 function validateRule (item, path, itemId, meta, c) {
   const {removeIncompleteRules, config, oldConfig} = c;
   const {showErrorMessage} = config.settings;
-  let id = item.get("id");
-  let properties = item.get("properties");
-  let field = properties.get("field") || null;
-  let operator = properties.get("operator") || null;
-  let operatorOptions = properties.get("operatorOptions");
-  let valueSrc = properties.get("valueSrc");
-  let value = properties.get("value");
-  let valueError = properties.get("valueError");
+  let id = item?.get("id");
+  let properties = item?.get("properties");
+  let field = properties?.get("field") || null;
+  let operator = properties?.get("operator") || null;
+  let operatorOptions = properties?.get("operatorOptions");
+  let valueSrc = properties?.get("valueSrc");
+  let value = properties?.get("value");
+  let valueError = properties?.get("valueError");
   const oldSerialized = {
     field,
     operator,
@@ -150,7 +150,7 @@ function validateRule (item, path, itemId, meta, c) {
   // Backward compatibility: obsolete operator range_between
   if (operator == "range_between" || operator == "range_not_between") {
     operator = operator == "range_between" ? "between" : "not_between";
-    console.info(`Fixed operator ${properties.get("operator")} to ${operator}`);
+    console.info(`Fixed operator ${properties?.get("operator")} to ${operator}`);
     properties = properties.set("operator", operator);
   }
   const operatorDefinition = operator ? getOperatorConfig(config, operator, field) : null;
@@ -166,7 +166,7 @@ function validateRule (item, path, itemId, meta, c) {
     if (operator == "is_empty" || operator == "is_not_empty") {
       // Backward compatibility: is_empty #494
       operator = operator == "is_empty" ? "is_null" : "is_not_null";
-      console.info(`Fixed operator ${properties.get("operator")} to ${operator} for ${field}`);
+      console.info(`Fixed operator ${properties?.get("operator")} to ${operator} for ${field}`);
       properties = properties.set("operator", operator);
     } else {
       console.warn(`Operator ${operator} is not supported for field ${field}`);
@@ -180,7 +180,7 @@ function validateRule (item, path, itemId, meta, c) {
   }
 
   //validate operator options
-  operatorOptions = properties.get("operatorOptions");
+  operatorOptions = properties?.get("operatorOptions");
   let _operatorCardinality = operator ? defaultValue(operatorDefinition.cardinality, 1) : null;
   if (!operator || operatorOptions && !operatorDefinition.options) {
     operatorOptions = null;
@@ -191,8 +191,8 @@ function validateRule (item, path, itemId, meta, c) {
   }
 
   //validate values
-  valueSrc = properties.get("valueSrc");
-  value = properties.get("value");
+  valueSrc = properties?.get("valueSrc");
+  value = properties?.get("value");
   const canFix = !showErrorMessage;
   const isEndValue = true;
   let {newValue, newValueSrc, newValueError} = getNewValueForFieldOp(config, oldConfig, properties, field, operator, null, canFix, isEndValue);
@@ -359,7 +359,7 @@ const validateFuncValue = (leftField, field, value, _valueSrc, valueType, asyncL
   let fixedValue = value;
 
   if (value) {
-    const funcKey = value.get("func");
+    const funcKey = value?.get("func");
     if (funcKey) {
       const funcConfig = getFuncConfig(config, funcKey);
       if (funcConfig) {
@@ -367,11 +367,11 @@ const validateFuncValue = (leftField, field, value, _valueSrc, valueType, asyncL
           return [`Function ${funcKey} should return value of type ${funcConfig.returnType}, but got ${valueType}`, value];
         for (const argKey in funcConfig.args) {
           const argConfig = funcConfig.args[argKey];
-          const args = fixedValue.get("args");
-          const argVal = args ? args.get(argKey) : undefined;
+          const args = fixedValue?.get("args");
+          const argVal = args ? args?.get(argKey) : undefined;
           const fieldDef = getFieldConfig(config, argConfig);
-          const argValue = argVal ? argVal.get("value") : undefined;
-          const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
+          const argValue = argVal ? argVal?.get("value") : undefined;
+          const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
           if (argValue !== undefined) {
             const [argValidError, fixedArgVal] = validateValue(
               config, leftField, fieldDef, operator, argValue, argConfig.type, argValueSrc, asyncListValues, canFix, isEndValue, false

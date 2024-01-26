@@ -215,12 +215,12 @@ function jsTreeToImmutable(tree) {
       // JSON doesn't support undefined and replaces undefined -> null
       // So fix: null -> undefined
       for (let i = 0; i < 2; i++) {
-        if (outValue.get("value")?.get(i) === null) {
+        if (outValue?.get("value")?.get(i) === null) {
           outValue = outValue.setIn(["value", i], undefined);
         }
       }
-    } else if (key == "value" && value.get(0) && value.get(0).toJS !== undefined) {
-      const valueJs = value.get(0).toJS();
+    } else if (key == "value" && value?.get(0) && value?.get(0).toJS !== undefined) {
+      const valueJs = value?.get(0).toJS();
       if (valueJs.func) {
         outValue = value.toOrderedMap();
       } else {
@@ -231,7 +231,7 @@ function jsTreeToImmutable(tree) {
       // keep in JS format
       outValue = value.toJS();
     } else if (key == "children1" && Immutable.Iterable.isIndexed(value)) {
-      outValue = new Immutable.OrderedMap(value.map(child => [child.get("id"), child]));
+      outValue = new Immutable.OrderedMap(value.map(child => [child?.get("id"), child]));
     } else {
       outValue = Immutable.Iterable.isIndexed(value) ? value.toList() : value.toOrderedMap();
     }

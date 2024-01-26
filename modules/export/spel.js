@@ -37,7 +37,7 @@ export const _spelFormat = (tree, config, returnErrors = true) => {
 
 const formatItem = (item, config, meta, parentField = null) => {
   if (!item) return undefined;
-  const type = item.get("type");
+  const type = item?.get("type");
 
   if ((type === "group" || type === "rule_group")) {
     return formatGroup(item, config, meta, parentField);
@@ -53,12 +53,12 @@ const formatItem = (item, config, meta, parentField = null) => {
 };
 
 const formatCase = (item, config, meta, parentField = null) => {
-  const type = item.get("type");
+  const type = item?.get("type");
   if (type != "case_group") {
     meta.errors.push(`Unexpected child of type ${type} inside switch`);
     return undefined;
   }
-  const properties = item.get("properties") || new Map();
+  const properties = item?.get("properties") || new Map();
   
   const [formattedValue, valueSrc, valueType] = formatItemValue(
     config, properties, meta, null, parentField, "!case_value"
@@ -69,8 +69,8 @@ const formatCase = (item, config, meta, parentField = null) => {
 };
 
 const formatSwitch = (item, config, meta, parentField = null) => {
-  const properties = item.get("properties") || new Map();
-  const children = item.get("children1");
+  const properties = item?.get("properties") || new Map();
+  const children = item?.get("children1");
   if (!children) return undefined;
   const cases = children
     .map((currentChild) => formatCase(currentChild, config, meta, null))
@@ -115,18 +115,18 @@ const formatSwitch = (item, config, meta, parentField = null) => {
 };
 
 const formatGroup = (item, config, meta, parentField = null) => {
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const mode = properties.get("mode");
-  const children = item.get("children1");
-  const field = properties.get("field");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const mode = properties?.get("mode");
+  const children = item?.get("children1");
+  const field = properties?.get("field");
   if (!children) return undefined;
 
-  let conjunction = properties.get("conjunction");
+  let conjunction = properties?.get("conjunction");
   if (!conjunction)
     conjunction = defaultConjunction(config);
   const conjunctionDefinition = config.conjunctions[conjunction];
-  const not = properties.get("not");
+  const not = properties?.get("not");
 
   const isRuleGroup = type === "rule_group";
   const isRuleGroupArray = isRuleGroup && mode != "struct";
@@ -135,7 +135,7 @@ const formatGroup = (item, config, meta, parentField = null) => {
   const isSpelArray = groupFieldDef.isSpelArray;
   
   // check op for reverse
-  let groupOperator = properties.get("operator");
+  let groupOperator = properties?.get("operator");
   if (!groupOperator && (!mode || mode == "some")) {
     groupOperator = "some";
   }
@@ -218,10 +218,10 @@ const buildFnToFormatOp = (operator, operatorDefinition) => {
 };
 
 const formatExpression = (meta, config, properties, formattedField, formattedValue, operator, valueSrc, valueType, isRev = false) => {
-  const field = properties.get("field");
+  const field = properties?.get("field");
   const opDef = getOperatorConfig(config, operator, field) || {};
   const fieldDef = getFieldConfig(config, field) || {};
-  const operatorOptions = properties.get("operatorOptions");
+  const operatorOptions = properties?.get("operatorOptions");
 
   //find fn to format expr
   const fn = opDef.spelFormatOp || buildFnToFormatOp(operator, opDef);
@@ -277,9 +277,9 @@ const checkOp = (config, operator, field) => {
 };
 
 const formatRule = (item, config, meta, parentField = null) => {
-  const properties = item.get("properties") || new Map();
-  const field = properties.get("field");
-  let operator = properties.get("operator");
+  const properties = item?.get("properties") || new Map();
+  const field = properties?.get("field");
+  let operator = properties?.get("operator");
   if (field == null || operator == null)
     return undefined;
 
@@ -309,17 +309,17 @@ const formatRule = (item, config, meta, parentField = null) => {
 };
 
 const formatItemValue = (config, properties, meta, operator, parentField, expectedValueType = null) => {
-  let field = properties.get("field");
-  const iValueSrc = properties.get("valueSrc");
-  const iValueType = properties.get("valueType");
-  if (expectedValueType == "!case_value" || iValueType && iValueType.get(0) == "case_value") {
+  let field = properties?.get("field");
+  const iValueSrc = properties?.get("valueSrc");
+  const iValueType = properties?.get("valueType");
+  if (expectedValueType == "!case_value" || iValueType && iValueType?.get(0) == "case_value") {
     field = "!case_value";
   }
   const fieldDef = getFieldConfig(config, field) || {};
   const operatorDefinition = getOperatorConfig(config, operator, field) || {};
   const cardinality = defaultValue(operatorDefinition.cardinality, 1);
-  const iValue = properties.get("value");
-  const asyncListValues = properties.get("asyncListValues");
+  const iValue = properties?.get("value");
+  const asyncListValues = properties?.get("asyncListValues");
   
   let valueSrcs = [];
   let valueTypes = [];
@@ -327,8 +327,8 @@ const formatItemValue = (config, properties, meta, operator, parentField, expect
   
   if (iValue != undefined) {
     const fvalue = iValue.map((currentValue, ind) => {
-      const valueSrc = iValueSrc ? iValueSrc.get(ind) : null;
-      const valueType = iValueType ? iValueType.get(ind) : null;
+      const valueSrc = iValueSrc ? iValueSrc?.get(ind) : null;
+      const valueType = iValueType ? iValueType?.get(ind) : null;
       const cValue = completeValue(currentValue, valueSrc, config);
       const widget = getWidgetForFieldOp(config, field, operator, valueSrc);
       const fieldWidgetDef = omit(getFieldWidgetConfig(config, field, operator, widget, valueSrc), ["factory"]);
@@ -435,8 +435,8 @@ const formatField = (meta, config, field, parentField = null) => {
 
 
 const formatFunc = (meta, config, currentValue, parentField = null) => {
-  const funcKey = currentValue.get("func");
-  const args = currentValue.get("args");
+  const funcKey = currentValue?.get("func");
+  const args = currentValue?.get("args");
   const funcConfig = getFuncConfig(config, funcKey);
   const funcName = funcConfig.spelFunc || funcKey;
 
@@ -444,10 +444,10 @@ const formatFunc = (meta, config, currentValue, parentField = null) => {
   for (const argKey in funcConfig.args) {
     const argConfig = funcConfig.args[argKey];
     const fieldDef = getFieldConfig(config, argConfig);
-    const argVal = args ? args.get(argKey) : undefined;
-    const argValue = argVal ? argVal.get("value") : undefined;
-    const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
-    const argAsyncListValues = argVal ? argVal.get("asyncListValues") : undefined;
+    const argVal = args ? args?.get(argKey) : undefined;
+    const argValue = argVal ? argVal?.get("value") : undefined;
+    const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
+    const argAsyncListValues = argVal ? argVal?.get("asyncListValues") : undefined;
     const formattedArgVal = formatValue(
       meta, config, argValue, argValueSrc, argConfig.type, fieldDef, argConfig, null, null, parentField, argAsyncListValues
     );

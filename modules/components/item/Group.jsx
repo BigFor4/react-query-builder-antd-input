@@ -84,22 +84,22 @@ export class BasicGroup extends PureComponent {
   }
 
   isEmpty(item) {
-    const isGroup = (item.get("type") == "group" || item.get("type") == "rule_group");
+    const isGroup = (item?.get("type") == "group" || item?.get("type") == "rule_group");
     return isGroup ? this.isEmptyGroup(item) : this.isEmptyRule(item);
   }
 
   isEmptyGroup(group) {
-    const children = group.get("children1");
+    const children = group?.get("children1");
     return !children || children.size == 0
       || children.size == 1 && this.isEmpty(children.first());
   }
 
   isEmptyRule(rule) {
-    const properties = rule.get("properties");
+    const properties = rule?.get("properties");
     return !(
-      properties.get("field") !== null
-      && properties.get("operator") !== null
-      && properties.get("value").filter((val) => val !== undefined).size > 0
+      properties?.get("field") !== null
+      && properties?.get("operator") !== null
+      && properties?.get("value").filter((val) => val !== undefined).size > 0
     );
   }
 
@@ -230,20 +230,20 @@ export class BasicGroup extends PureComponent {
   renderItem(item) {
     const props = this.props;
     const { config, actions, onDragStart, isLocked } = props;
-    const isRuleGroup = item.get("type") == "group" && item.getIn(["properties", "field"]) != null;
-    const type = isRuleGroup ? "rule_group" : item.get("type");
+    const isRuleGroup = item?.get("type") == "group" && item.getIn(["properties", "field"]) != null;
+    const type = isRuleGroup ? "rule_group" : item?.get("type");
     return (
       <Item
         {...this.extraPropsForItem(item)}
-        key={item.get("id")}
-        id={item.get("id")}
+        key={item?.get("id")}
+        id={item?.get("id")}
         groupId={props.id}
-        path={item.get("path")}
+        path={item?.get("path")}
         type={type}
-        properties={item.get("properties")}
+        properties={item?.get("properties")}
         config={config}
         actions={actions}
-        children1={item.get("children1")}
+        children1={item?.get("children1")}
         reordableNodesCnt={this.reordableNodesCntForItem(item)}
         totalRulesCnt={this.totalRulesCntForItem(item)}
         parentReordableNodesCnt={this.reordableNodesCnt()}

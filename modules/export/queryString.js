@@ -29,8 +29,8 @@ export const queryString = (item, config, isForDisplay = false) => {
 
 const formatItem = (item, config, meta, isForDisplay = false, parentField = null) => {
   if (!item) return undefined;
-  const type = item.get("type");
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const children = item?.get("children1");
 
   if ((type === "group" || type === "rule_group") ) {
     return formatGroup(item, config, meta, isForDisplay, parentField);
@@ -43,24 +43,24 @@ const formatItem = (item, config, meta, isForDisplay = false, parentField = null
 
 
 const formatGroup = (item, config, meta, isForDisplay = false, parentField = null) => {
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const mode = properties.get("mode");
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const mode = properties?.get("mode");
+  const children = item?.get("children1");
   if (!children) return undefined;
 
   const isRuleGroup = (type === "rule_group");
   // TIP: don't cut group for mode == 'struct' and don't do aggr format (maybe later)
-  const groupField = isRuleGroup && mode == "array" ? properties.get("field") : null;
+  const groupField = isRuleGroup && mode == "array" ? properties?.get("field") : null;
   const canHaveEmptyChildren = isRuleGroup && mode == "array";
-  const not = properties.get("not");
+  const not = properties?.get("not");
   const list = children
     .map((currentChild) => formatItem(currentChild, config, meta, isForDisplay, groupField))
     .filter((currentChild) => typeof currentChild !== "undefined");
   if (!canHaveEmptyChildren && !list.size)
     return undefined;
 
-  let conjunction = properties.get("conjunction");
+  let conjunction = properties?.get("conjunction");
   if (!conjunction)
     conjunction = defaultConjunction(config);
   const conjunctionDefinition = config.conjunctions[conjunction];
@@ -90,15 +90,15 @@ const formatGroup = (item, config, meta, isForDisplay = false, parentField = nul
 
 
 const formatItemValue = (config, properties, meta, _operator, isForDisplay, parentField) => {
-  const field = properties.get("field");
-  const iValueSrc = properties.get("valueSrc");
-  const iValueType = properties.get("valueType");
+  const field = properties?.get("field");
+  const iValueSrc = properties?.get("valueSrc");
+  const iValueType = properties?.get("valueType");
   const fieldDef = getFieldConfig(config, field) || {};
-  const operator = _operator || properties.get("operator");
+  const operator = _operator || properties?.get("operator");
   const operatorDef = getOperatorConfig(config, operator, field) || {};
   const cardinality = defaultValue(operatorDef.cardinality, 1);
-  const iValue = properties.get("value");
-  const asyncListValues = properties.get("asyncListValues");
+  const iValue = properties?.get("value");
+  const asyncListValues = properties?.get("asyncListValues");
 
   let valueSrcs = [];
   let valueTypes = [];
@@ -106,8 +106,8 @@ const formatItemValue = (config, properties, meta, _operator, isForDisplay, pare
 
   if (iValue != undefined) {
     const fvalue = iValue.map((currentValue, ind) => {
-      const valueSrc = iValueSrc ? iValueSrc.get(ind) : null;
-      const valueType = iValueType ? iValueType.get(ind) : null;
+      const valueSrc = iValueSrc ? iValueSrc?.get(ind) : null;
+      const valueType = iValueType ? iValueType?.get(ind) : null;
       const cValue = completeValue(currentValue, valueSrc, config);
       const widget = getWidgetForFieldOp(config, field, operator, valueSrc);
       const fieldWidgetDef = omit(getFieldWidgetConfig(config, field, operator, widget, valueSrc), ["factory"]);
@@ -149,7 +149,7 @@ const buildFnToFormatOp = (operator, operatorDefinition) => {
     // between
     fn = (field, op, values, valueSrc, valueType, opDef, operatorOptions, isForDisplay) => {
       const valFrom = values.first();
-      const valTo = values.get(1);
+      const valTo = values?.get(1);
       return `${field} ${fop} ${valFrom} AND ${valTo}`;
     };
   }
@@ -157,10 +157,10 @@ const buildFnToFormatOp = (operator, operatorDefinition) => {
 };
 
 const formatRule = (item, config, meta, isForDisplay = false, parentField = null, returnArgs = false) => {
-  const properties = item.get("properties") || new Map();
-  const field = properties.get("field");
-  let operator = properties.get("operator");
-  let operatorOptions = properties.get("operatorOptions");
+  const properties = item?.get("properties") || new Map();
+  const field = properties?.get("field");
+  let operator = properties?.get("operator");
+  let operatorOptions = properties?.get("operatorOptions");
   if (field == null || operator == null)
     return undefined;
   
@@ -283,8 +283,8 @@ const formatField = (config, meta, field, isForDisplay, parentField = null, cutP
 
 
 const formatFunc = (config, meta, funcValue, isForDisplay, parentField = null) => {
-  const funcKey = funcValue.get("func");
-  const args = funcValue.get("args");
+  const funcKey = funcValue?.get("func");
+  const args = funcValue?.get("args");
   const funcConfig = getFuncConfig(config, funcKey);
   const funcName = isForDisplay && funcConfig.label || funcKey;
 
@@ -293,10 +293,10 @@ const formatFunc = (config, meta, funcValue, isForDisplay, parentField = null) =
   for (const argKey in funcConfig.args) {
     const argConfig = funcConfig.args[argKey];
     const fieldDef = getFieldConfig(config, argConfig);
-    const argVal = args ? args.get(argKey) : undefined;
-    const argValue = argVal ? argVal.get("value") : undefined;
-    const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
-    const argAsyncListValues = argVal ? argVal.get("asyncListValues") : undefined;
+    const argVal = args ? args?.get(argKey) : undefined;
+    const argValue = argVal ? argVal?.get("value") : undefined;
+    const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
+    const argAsyncListValues = argVal ? argVal?.get("asyncListValues") : undefined;
     const formattedArgVal = formatValue(
       config, meta, argValue, argValueSrc, argConfig.type, fieldDef, argConfig, null, null, isForDisplay, parentField, argAsyncListValues
     );

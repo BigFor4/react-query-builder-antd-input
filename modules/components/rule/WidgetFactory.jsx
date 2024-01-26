@@ -17,11 +17,11 @@ export default ({
   }
     
   let value = isSpecialRange 
-    ? [immValue.get(0), immValue.get(1)] 
-    : (immValue ? immValue.get(delta) : undefined);
+    ? [immValue?.get(0), immValue?.get(1)] 
+    : (immValue ? immValue?.get(delta) : undefined);
   const valueError = immValueError && (isSpecialRange 
-    ? [immValueError.get(0), immValueError.get(1)]
-    : immValueError.get(delta)
+    ? [immValueError?.get(0), immValueError?.get(1)]
+    : immValueError?.get(delta)
   ) || null;
   if (isSpecialRange && value[0] === undefined && value[1] === undefined)
     value = undefined;

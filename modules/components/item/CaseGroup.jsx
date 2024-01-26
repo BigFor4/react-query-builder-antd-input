@@ -175,7 +175,7 @@ class CaseGroup extends BasicGroup {
   isEmptyCurrentGroup() {
     // used to confirm self-deletion
     const { value } = this.props;
-    const oneValue = value && value.size ? value.get(0) : null;
+    const oneValue = value && value.size ? value?.get(0) : null;
     const hasValue = oneValue != null && (Array.isArray(oneValue) ? oneValue.length > 0 : true);
     return super.isEmptyCurrentGroup() && !hasValue;
   }

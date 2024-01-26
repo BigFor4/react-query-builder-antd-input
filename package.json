@@ -1,6 +1,6 @@
 {
   "name": "react-query-builder-antd-input",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "User-friendly query builder for React. Please migrate to new @react-query-builder-antd-input/* See https://github.com/BigFor4/react-query-builder-antd-input#migration-to-600",
   "keywords": [
     "query-builder",
@@ -113,6 +113,7 @@
     "@babel/plugin-proposal-decorators": "^7.14.5",
     "@babel/plugin-proposal-private-methods": "^7.14.5",
     "@babel/plugin-transform-modules-commonjs": "^7.14.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.5",
     "@babel/preset-react": "^7.14.5",

@@ -28,7 +28,7 @@ export const completeFuncValue = (value, config) => {
   const _checkFuncValue = (value) => {
     if (!value)
       return undefined;
-    const funcKey = value.get("func");
+    const funcKey = value?.get("func");
     const funcConfig = funcKey && getFuncConfig(config, funcKey);
     if (!funcConfig)
       return undefined;
@@ -38,11 +38,11 @@ export const completeFuncValue = (value, config) => {
       const argConfig = funcConfig.args[argKey];
       const {valueSources, isOptional, defaultValue} = argConfig;
       const filteredValueSources = filterValueSourcesForField(config, valueSources, argConfig);
-      const args = complValue.get("args");
+      const args = complValue?.get("args");
       const argDefaultValueSrc = filteredValueSources.length == 1 ? filteredValueSources[0] : undefined;
-      const argVal = args ? args.get(argKey) : undefined;
-      const argValue = argVal ? argVal.get("value") : undefined;
-      const argValueSrc = (argVal ? argVal.get("valueSrc") : undefined) || argDefaultValueSrc;
+      const argVal = args ? args?.get(argKey) : undefined;
+      const argValue = argVal ? argVal?.get("value") : undefined;
+      const argValueSrc = (argVal ? argVal?.get("valueSrc") : undefined) || argDefaultValueSrc;
       if (argValue !== undefined) {
         const completeArgValue = completeValue(argValue, argValueSrc, config);
         if (completeArgValue === undefined) {
@@ -81,11 +81,11 @@ const getUsedFieldsInFuncValue = (value, config) => {
   let badFields = [];
 
   const _traverse = (value) => {
-    const args = value && value.get("args");
+    const args = value && value?.get("args");
     if (!args) return;
     for (const arg of args.values()) {
-      if (arg.get("valueSrc") == "field") {
-        const rightField = arg.get("value");
+      if (arg?.get("valueSrc") == "field") {
+        const rightField = arg?.get("value");
         if (rightField) {
           const rightFieldDefinition = config ? getFieldConfig(config, rightField) : undefined;
           if (config && !rightFieldDefinition)
@@ -93,8 +93,8 @@ const getUsedFieldsInFuncValue = (value, config) => {
           else
             usedFields.push(rightField);
         }
-      } else if (arg.get("valueSrc") == "func") {
-        _traverse(arg.get("value"));
+      } else if (arg?.get("valueSrc") == "func") {
+        _traverse(arg?.get("value"));
       }
     }
   };
@@ -160,7 +160,7 @@ const getDefaultArgValue = ({defaultValue: value}) => {
 * @param {object} argConfig 
 */
 export const setArgValue = (value, argKey, argVal, argConfig, config) => {
-  if (value && value.get("func")) {
+  if (value && value?.get("func")) {
     value = value.setIn(["args", argKey, "value"], argVal);
 
     // set default arg value sorce
@@ -182,7 +182,7 @@ export const setArgValue = (value, argKey, argVal, argConfig, config) => {
 * @param {object} argConfig 
 */
 export const setArgValueSrc = (value, argKey, argValSrc, _argConfig, _config) => {
-  if (value && value.get("func")) {
+  if (value && value?.get("func")) {
     value = value.setIn(["args", argKey], new Immutable.Map({valueSrc: argValSrc}));
   }
   return value;

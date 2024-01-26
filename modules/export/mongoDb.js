@@ -39,7 +39,7 @@ export const _mongodbFormat = (tree, config, returnErrors = true) => {
 const formatItem = (parents, item, config, meta, _not = false, _canWrapExpr = true, _fieldName = undefined, _value = undefined) => {
   if (!item) return undefined;
 
-  const type = item.get("type");
+  const type = item?.get("type");
 
   if ((type === "group" || type === "rule_group")) {
     return formatGroup(parents, item, config, meta, _not, _canWrapExpr, _fieldName, _value);
@@ -51,26 +51,26 @@ const formatItem = (parents, item, config, meta, _not = false, _canWrapExpr = tr
 
 
 const formatGroup = (parents, item, config, meta, _not = false, _canWrapExpr = true, _fieldName = undefined, _value = undefined) => {
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const children = item?.get("children1");
   const {canShortMongoQuery} = config.settings;
   if (!children) return undefined;
 
-  const hasParentRuleGroup = parents.filter(it => it.get("type") == "rule_group").length > 0;
+  const hasParentRuleGroup = parents.filter(it => it?.get("type") == "rule_group").length > 0;
   const parentPath = parents
-    .filter(it => it.get("type") == "rule_group")
-    .map(it => it.get("properties").get("field"))
+    .filter(it => it?.get("type") == "rule_group")
+    .map(it => it?.get("properties")?.get("field"))
     .slice(-1).pop();
   const realParentPath = hasParentRuleGroup && parentPath;
 
-  const groupField = type === "rule_group" ? properties.get("field") : null;
+  const groupField = type === "rule_group" ? properties?.get("field") : null;
   const groupFieldName = formatFieldName(groupField, config, meta, realParentPath);
   const groupFieldDef = getFieldConfig(config, groupField) || {};
-  const mode = groupFieldDef.mode; //properties.get("mode");
+  const mode = groupFieldDef.mode; //properties?.get("mode");
   const canHaveEmptyChildren = groupField && mode == "array";
 
-  const not = _not ? !(properties.get("not")) : (properties.get("not"));
+  const not = _not ? !(properties?.get("not")) : (properties?.get("not"));
   const list = children
     .map((currentChild) => formatItem(
       [...parents, item], currentChild, config, meta, not, true, mode == "array" ? (f => `$$el.${f}`) : undefined)
@@ -79,7 +79,7 @@ const formatGroup = (parents, item, config, meta, _not = false, _canWrapExpr = t
   if (!canHaveEmptyChildren && !list.size)
     return undefined;
 
-  let conjunction = properties.get("conjunction");
+  let conjunction = properties?.get("conjunction");
   if (!conjunction)
     conjunction = defaultConjunction(config);
   let conjunctionDefinition = config.conjunctions[conjunction];
@@ -157,22 +157,22 @@ const formatGroup = (parents, item, config, meta, _not = false, _canWrapExpr = t
 
 
 const formatRule = (parents, item, config, meta, _not = false, _canWrapExpr = true, _fieldName = undefined, _value = undefined) => {
-  const properties = item.get("properties") || new Map();
+  const properties = item?.get("properties") || new Map();
 
-  const hasParentRuleGroup = parents.filter(it => it.get("type") == "rule_group").length > 0;
+  const hasParentRuleGroup = parents.filter(it => it?.get("type") == "rule_group").length > 0;
   const parentPath = parents
-    .filter(it => it.get("type") == "rule_group")
-    .map(it => it.get("properties").get("field"))
+    .filter(it => it?.get("type") == "rule_group")
+    .map(it => it?.get("properties")?.get("field"))
     .slice(-1).pop();
   const realParentPath = hasParentRuleGroup && parentPath;
 
-  let operator = properties.get("operator");
-  const operatorOptions = properties.get("operatorOptions");
-  const field = properties.get("field");
-  const iValue = properties.get("value");
-  const iValueSrc = properties.get("valueSrc");
-  const iValueType = properties.get("valueType");
-  const asyncListValues = properties.get("asyncListValues");
+  let operator = properties?.get("operator");
+  const operatorOptions = properties?.get("operatorOptions");
+  const field = properties?.get("field");
+  const iValue = properties?.get("value");
+  const iValueSrc = properties?.get("valueSrc");
+  const iValueType = properties?.get("valueType");
+  const asyncListValues = properties?.get("asyncListValues");
 
   if (field == null || operator == null || iValue === undefined)
     return undefined;
@@ -197,8 +197,8 @@ const formatRule = (parents, item, config, meta, _not = false, _canWrapExpr = tr
   let valueTypes = [];
   let useExpr = false;
   const fvalue = iValue.map((currentValue, ind) => {
-    const valueSrc = iValueSrc ? iValueSrc.get(ind) : null;
-    const valueType = iValueType ? iValueType.get(ind) : null;
+    const valueSrc = iValueSrc ? iValueSrc?.get(ind) : null;
+    const valueType = iValueType ? iValueType?.get(ind) : null;
     const cValue = completeValue(currentValue, valueSrc, config);
     const widget = getWidgetForFieldOp(config, field, operator, valueSrc);
     const fieldWidgetDef = omit(getFieldWidgetConfig(config, field, operator, widget, valueSrc), ["factory"]);
@@ -341,8 +341,8 @@ const formatFunc = (meta, config, currentValue, parentPath) => {
   const useExpr = true;
   let ret;
 
-  const funcKey = currentValue.get("func");
-  const args = currentValue.get("args");
+  const funcKey = currentValue?.get("func");
+  const args = currentValue?.get("args");
   const funcConfig = getFuncConfig(config, funcKey);
   const funcName = funcConfig.mongoFunc || funcKey;
   const mongoArgsAsObject = funcConfig.mongoArgsAsObject;
@@ -353,10 +353,10 @@ const formatFunc = (meta, config, currentValue, parentPath) => {
   for (const argKey in funcConfig.args) {
     const argConfig = funcConfig.args[argKey];
     const fieldDef = getFieldConfig(config, argConfig);
-    const argVal = args ? args.get(argKey) : undefined;
-    const argValue = argVal ? argVal.get("value") : undefined;
-    const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
-    const argAsyncListValues = argVal ? argVal.get("asyncListValues") : undefined;
+    const argVal = args ? args?.get(argKey) : undefined;
+    const argValue = argVal ? argVal?.get("value") : undefined;
+    const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
+    const argAsyncListValues = argVal ? argVal?.get("asyncListValues") : undefined;
     const widget = getWidgetForFieldOp(config, fieldDef, null, argValueSrc);
     const fieldWidgetDef = omit(getFieldWidgetConfig(config, fieldDef, null, widget, argValueSrc), ["factory"]);
     const [formattedArgVal, _argUseExpr] = formatValue(

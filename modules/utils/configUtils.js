@@ -31,12 +31,12 @@ export const createConfigMemo = () => {
 
   const findExtended = (findConfig) => {
     // strict find:
-    // return configStore.get(findConfig) || configStore.values().find(ec => ec === findConfig);
+    // return configStore?.get(findConfig) || configStore.values().find(ec => ec === findConfig);
 
     for (const savedConfig of configStore.keys()) {
       const found = configKeys.map(k => savedConfig[k] === findConfig[k]).filter(v => !v).length === 0;
       if (found) {
-        return configStore.get(savedConfig);
+        return configStore?.get(savedConfig);
       }
     }
 

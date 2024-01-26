@@ -25,12 +25,12 @@ const selectTypes = [
 export const getNewValueForFieldOp = function (config, oldConfig = null, current, newField, newOperator, changedProp = null, canFix = true, isEndValue = false) {
   if (!oldConfig)
     oldConfig = config;
-  const currentField = current.get("field");
-  const currentOperator = current.get("operator");
-  const currentValue = current.get("value");
-  const currentValueSrc = current.get("valueSrc", new Immutable.List());
-  const currentValueType = current.get("valueType", new Immutable.List());
-  const currentAsyncListValues = current.get("asyncListValues");
+  const currentField = current?.get("field");
+  const currentOperator = current?.get("operator");
+  const currentValue = current?.get("value");
+  const currentValueSrc = current?.get("valueSrc", new Immutable.List());
+  const currentValueType = current?.get("valueType", new Immutable.List());
+  const currentAsyncListValues = current?.get("asyncListValues");
 
   //const isValidatingTree = (changedProp === null);
   const {convertableWidgets, clearValueOnChangeField, clearValueOnChangeOp, showErrorMessage} = config.settings;
@@ -54,7 +54,7 @@ export const getNewValueForFieldOp = function (config, oldConfig = null, current
 
   // compare old & new widgets
   for (let i = 0 ; i < operatorCardinality ; i++) {
-    const vs = currentValueSrc.get(i) || null;
+    const vs = currentValueSrc?.get(i) || null;
     const currentWidget = getWidgetForFieldOp(oldConfig, currentField, currentOperator, vs);
     const newWidget = getWidgetForFieldOp(config, newField, newOperator, vs);
     // need to also check value widgets if we changed operator and current value source was 'field'
@@ -77,9 +77,9 @@ export const getNewValueForFieldOp = function (config, oldConfig = null, current
   let valueErrors = Array.from({length: operatorCardinality}, () => null);
   if (canReuseValue) {
     for (let i = 0 ; i < operatorCardinality ; i++) {
-      const v = currentValue.get(i);
-      const vType = currentValueType.get(i) || null;
-      const vSrc = currentValueSrc.get(i) || null;
+      const v = currentValue?.get(i);
+      const vType = currentValueType?.get(i) || null;
+      const vSrc = currentValueSrc?.get(i) || null;
       let isValidSrc = (valueSources.find(v => v == vSrc) != null);
       if (!isValidSrc && i > 0 && vSrc == null)
         isValidSrc = true; // make exception for range widgets (when changing op from '==' to 'between')
@@ -115,7 +115,7 @@ export const getNewValueForFieldOp = function (config, oldConfig = null, current
     let v = undefined;
     if (canReuseValue) {
       if (i < currentValue.size) {
-        v = currentValue.get(i);
+        v = currentValue?.get(i);
         if (valueFixes[i] !== undefined) {
           v = valueFixes[i];
         }
@@ -134,7 +134,7 @@ export const getNewValueForFieldOp = function (config, oldConfig = null, current
     let vs = null;
     if (canReuseValue) {
       if (i < currentValueSrc.size)
-        vs = currentValueSrc.get(i);
+        vs = currentValueSrc?.get(i);
     } else if (valueSources.length == 1) {
       vs = valueSources[0];
     } else if (valueSources.length > 1) {
@@ -161,7 +161,7 @@ export const getNewValueForFieldOp = function (config, oldConfig = null, current
     let vt = null;
     if (canReuseValue) {
       if (i < currentValueType.size)
-        vt = currentValueType.get(i);
+        vt = currentValueType?.get(i);
     } else if (operatorCardinality == 1 && firstWidgetConfig && firstWidgetConfig.type !== undefined) {
       vt = firstWidgetConfig.type;
     } else if (operatorCardinality == 1 && newFieldConfig && newFieldConfig?.type !== undefined) {

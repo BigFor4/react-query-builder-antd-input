@@ -38,7 +38,7 @@ export default class Proximity extends PureComponent {
     const {settings, widgets} = config;
     const defaultProximity = defaults ? defaults.proximity : undefined;
     const {showLabels} = settings;
-    const selectedProximity = options.get("proximity", defaultProximity);
+    const selectedProximity = options?.get("proximity", defaultProximity);
     const proxValues = range(minProximity, maxProximity + 1).map((item) => ({title: item, value: item}));
     const Select = widgets.select.factory;
 

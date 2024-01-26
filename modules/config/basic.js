@@ -256,7 +256,7 @@ const operators = {
     cardinality: 2,
     formatOp: (field, op, values, valueSrcs, valueTypes, opDef, operatorOptions, isForDisplay) => {
       let valFrom = values.first();
-      let valTo = values.get(1);
+      let valTo = values?.get(1);
       if (isForDisplay)
         return `${field} BETWEEN ${valFrom} AND ${valTo}`;
       else
@@ -296,7 +296,7 @@ const operators = {
     cardinality: 2,
     formatOp: (field, op, values, valueSrcs, valueTypes, opDef, operatorOptions, isForDisplay) => {
       let valFrom = values.first();
-      let valTo = values.get(1);
+      let valTo = values?.get(1);
       if (isForDisplay)
         return `${field} NOT BETWEEN ${valFrom} AND ${valTo}`;
       else
@@ -560,16 +560,16 @@ const operators = {
     ],
     formatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions, isForDisplay) => {
       const val1 = values.first();
-      const val2 = values.get(1);
-      const prox = operatorOptions.get("proximity");
+      const val2 = values?.get(1);
+      const prox = operatorOptions?.get("proximity");
       return `${field} ${val1} NEAR/${prox} ${val2}`;
     },
     sqlFormatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions, fieldDef) => {
       const val1 = values.first();
-      const val2 = values.get(1);
+      const val2 = values?.get(1);
       const aVal1 = SqlString.trim(val1);
       const aVal2 = SqlString.trim(val2);
-      const prox = operatorOptions.get("proximity");
+      const prox = operatorOptions?.get("proximity");
       return `CONTAINS(${field}, 'NEAR((${aVal1}, ${aVal2}), ${prox})')`;
     },
     mongoFormatOp: undefined, // not supported
@@ -828,17 +828,17 @@ const widgets = {
     jsonLogic: (val, fieldDef, wgtDef) => {
       // return seconds of day
       const dateVal = moment(val, wgtDef.valueFormat);
-      return dateVal.get("hour") * 60 * 60 + dateVal.get("minute") * 60 + dateVal.get("second");
+      return dateVal?.get("hour") * 60 * 60 + dateVal?.get("minute") * 60 + dateVal?.get("second");
     },
     toJS: (val, fieldSettings) => {
       // return seconds of day
       const dateVal = moment(val, fieldSettings.valueFormat);
-      return dateVal.isValid() ? dateVal.get("hour") * 60 * 60 + dateVal.get("minute") * 60 + dateVal.get("second") : undefined;
+      return dateVal.isValid() ? dateVal?.get("hour") * 60 * 60 + dateVal?.get("minute") * 60 + dateVal?.get("second") : undefined;
     },
     mongoFormatValue: (val, fieldDef, wgtDef) => {
       // return seconds of day
       const dateVal = moment(val, wgtDef.valueFormat);
-      return dateVal.get("hour") * 60 * 60 + dateVal.get("minute") * 60 + dateVal.get("second");
+      return dateVal?.get("hour") * 60 * 60 + dateVal?.get("minute") * 60 + dateVal?.get("second");
     },
     elasticSearchFormatValue: function elasticSearchFormatValue(queryType, value, operator, fieldName) {
       return {
@@ -1299,7 +1299,7 @@ const settings = {
     } else if (cardinality == 2) {
       const cond = whereStr ? ` WHERE ${whereStr}` : "";
       let valFrom = value.first();
-      let valTo = value.get(1);
+      let valTo = value?.get(1);
       return `COUNT OF ${aggrField}${cond} ${labelForFormat} ${valFrom} AND ${valTo}`;
     }
   },

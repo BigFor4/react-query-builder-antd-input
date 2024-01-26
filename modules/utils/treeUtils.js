@@ -31,11 +31,11 @@ export const expandTreeSubpath = (path, ...suffix) =>
  * @return {Immutable.Map}
  */
 export const getItemByPath = (tree, path) => {
-  let children = new Immutable.OrderedMap({ [tree.get("id")] : tree });
+  let children = new Immutable.OrderedMap({ [tree?.get("id")] : tree });
   let res = tree;
   path.forEach((id) => {
-    res = children.get(id);
-    children = res.get("children1");
+    res = children?.get(id);
+    children = res?.get("children1");
   });
   return res;
 };
@@ -50,12 +50,12 @@ export const removePathsInTree = (tree) => {
   let newTree = tree;
 
   function _processNode (item, path) {
-    const itemPath = path.push(item.get("id"));
-    if (item.get("path")) {
+    const itemPath = path.push(item?.get("id"));
+    if (item?.get("path")) {
       newTree = newTree.removeIn(expandTreePath(itemPath, "path"));
     }
 
-    const children = item.get("children1");
+    const children = item?.get("children1");
     if (children) {
       children.map((child, _childId) => {
         _processNode(child, itemPath);
@@ -78,13 +78,13 @@ export const removeIsLockedInTree = (tree) => {
   let newTree = tree;
 
   function _processNode (item, path, isParentLocked = false) {
-    const itemPath = path.push(item.get("id"));
+    const itemPath = path.push(item?.get("id"));
     const isLocked = item.getIn(["properties", "isLocked"]);
     if (isParentLocked && isLocked) {
       newTree = newTree.deleteIn(expandTreePath(itemPath, "properties", "isLocked"));
     }
 
-    const children = item.get("children1");
+    const children = item?.get("children1");
     if (children) {
       children.map((child, _childId) => {
         _processNode(child, itemPath, isLocked || isParentLocked);
@@ -108,8 +108,8 @@ export const fixPathsInTree = (tree) => {
 
   function _processNode (item, path, lev, nodeId) {
     if (!item) return;
-    const currPath = item.get("path");
-    const currId = item.get("id");
+    const currPath = item?.get("path");
+    const currId = item?.get("id");
     const itemId = currId || nodeId;
     const itemPath = path.push(itemId);
     if (!currPath || !currPath.equals(itemPath)) {
@@ -119,7 +119,7 @@ export const fixPathsInTree = (tree) => {
       newTree = newTree.setIn(expandTreePath(itemPath, "id"), itemId);
     }
 
-    const children = item.get("children1");
+    const children = item?.get("children1");
     if (children) {
       if (children.constructor.name == "Map") {
         // protect: should me OrderedMap, not Map (issue #501)
@@ -145,10 +145,10 @@ export const fixEmptyGroupsInTree = (tree) => {
 
   function _processNode (item, path, lev, nodeId) {
     if (!item) return false;
-    const itemId = item.get("id") || nodeId;
+    const itemId = item?.get("id") || nodeId;
     const itemPath = path.push(itemId);
 
-    const children = item.get("children1");
+    const children = item?.get("children1");
     if (children) {
       const allChildrenGone = children.map((child, childId) => {
         return _processNode(child, itemPath, lev + 1, childId);
@@ -177,10 +177,10 @@ export const getFlatTree = (tree) => {
   let realHeight = 0;
 
   function _flatizeTree (item, path, insideCollapsed, insideLocked, insideRuleGroup, lev, info, parentType, caseId) {
-    const type = item.get("type");
-    const collapsed = item.get("collapsed");
-    const id = item.get("id");
-    const children = item.get("children1");
+    const type = item?.get("type");
+    const collapsed = item?.get("collapsed");
+    const id = item?.get("id");
+    const children = item?.get("children1");
     const isLocked = item.getIn(["properties", "isLocked"]);
     const childrenIds = children ? children.map((_child, childId) => childId) : null;
     const isRuleGroup = type == "rule_group";
@@ -273,9 +273,9 @@ export const getTotalReordableNodesCountInTree = (tree) => {
   function _processNode (item, path, lev) {
     let id, children, type;
     if (typeof item.get === "function") {
-      id = item.get("id");
-      children = item.get("children1");
-      type = item.get("type");
+      id = item?.get("id");
+      children = item?.get("children1");
+      type = item?.get("type");
     } else {
       id = item.id;
       children = item.children1;
@@ -309,9 +309,9 @@ export const getTotalRulesCountInTree = (tree) => {
   function _processNode (item, path, lev) {
     let id, children, type;
     if (typeof item.get === "function") {
-      id = item.get("id");
-      children = item.get("children1");
-      type = item.get("type");
+      id = item?.get("id");
+      children = item?.get("children1");
+      type = item?.get("type");
     } else {
       id = item.id;
       children = item.children1;
@@ -337,8 +337,8 @@ export const getTreeBadFields = (tree) => {
   let badFields = [];
 
   function _processNode (item, path, lev) {
-    const id = item.get("id");
-    const children = item.get("children1");
+    const id = item?.get("id");
+    const children = item?.get("children1");
     const valueError = item.getIn(["properties", "valueError"]);
     const field = item.getIn(["properties", "field"]);
     if (valueError && valueError.size > 0 && valueError.filter(v => v != null).size > 0) {
@@ -392,13 +392,13 @@ export const getLightTree = (tree, children1AsArray = false) => {
 
 export const getSwitchValues = (tree) => {
   let vals = [];
-  const children = tree.get("children1");
+  const children = tree?.get("children1");
   if (children) {
     children.map((child) => {
       const value = child.getIn(["properties", "value"]);
       let caseValue;
       if (value && value.size == 1) {
-        caseValue = value.get(0);
+        caseValue = value?.get(0);
         if (Array.isArray(caseValue) && caseValue.length == 0) {
           caseValue = null;
         }
@@ -412,6 +412,6 @@ export const getSwitchValues = (tree) => {
   return vals;
 };
 
-export const isEmptyTree = (tree) => (!tree.get("children1") || tree.get("children1").size == 0);
+export const isEmptyTree = (tree) => (!tree?.get("children1") || tree?.get("children1").size == 0);
 
 export const hasChildren = (tree, path) => tree.getIn(expandTreePath(path, "children1")).size > 0;

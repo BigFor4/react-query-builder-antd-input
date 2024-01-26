@@ -73,7 +73,7 @@ export default class Widget extends PureComponent {
 
   _setValue = (isSpecialRange, delta, widgetType, value, asyncListValues, __isInternal) => {
     if (isSpecialRange && Array.isArray(value)) {
-      const oldRange = [this.props.value.get(0), this.props.value.get(1)];
+      const oldRange = [this.props.value?.get(0), this.props.value?.get(1)];
       if (oldRange[0] != value[0])
         this.props.setValue(0, value[0], widgetType, asyncListValues, __isInternal);
       if (oldRange[1] != value[1])
@@ -107,7 +107,7 @@ export default class Widget extends PureComponent {
       return null;
     }
     const isSpecialRange = operatorDefinition?.isSpecialRange;
-    const isSpecialRangeForSrcField = isSpecialRange && (iValueSrcs.get(0) == "field" || iValueSrcs.get(1) == "field");
+    const isSpecialRangeForSrcField = isSpecialRange && (iValueSrcs?.get(0) == "field" || iValueSrcs?.get(1) == "field");
     const isTrueSpecialRange = isSpecialRange && !isSpecialRangeForSrcField;
     const cardinality = isTrueSpecialRange ? 1 : defaultValue(operatorDefinition?.cardinality, 1);
     if (cardinality === 0) {
@@ -117,7 +117,7 @@ export default class Widget extends PureComponent {
     const valueSources = getValueSourcesForFieldOp(config, field, operator, fieldDefinition, isFuncArg ? leftField : null);
 
     const widgets = range(0, cardinality).map(delta => {
-      const valueSrc = iValueSrcs.get(delta) || null;
+      const valueSrc = iValueSrcs?.get(delta) || null;
       let widget = getWidgetForFieldOp(config, field, operator, valueSrc);
       let widgetDefinition = getFieldWidgetConfig(config, field, operator, widget, valueSrc);
       if (isSpecialRangeForSrcField) {

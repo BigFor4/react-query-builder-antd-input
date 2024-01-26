@@ -171,7 +171,7 @@ class Item extends PureComponent {
 
   render() {
     const { type, ...props } = this.props;
-    const mode = props.properties.get("mode");
+    const mode = props.properties?.get("mode");
     const postfix = mode == "array" ? "_ext" : "";
     const renderItem = props.config.settings.renderItem;
     let Cmp = typeMap[type + postfix];

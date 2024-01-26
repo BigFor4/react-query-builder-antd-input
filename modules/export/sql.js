@@ -37,8 +37,8 @@ export const _sqlFormat = (tree, config, returnErrors = true) => {
 
 const formatItem = (item, config, meta) => {
   if (!item) return undefined;
-  const type = item.get("type");
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const children = item?.get("children1");
 
   if ((type === "group" || type === "rule_group") && children && children.size) {
     return formatGroup(item, config, meta);
@@ -51,24 +51,24 @@ const formatItem = (item, config, meta) => {
 
 
 const formatGroup = (item, config, meta) => {
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const children = item.get("children1");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const children = item?.get("children1");
 
-  const groupField = type === "rule_group" ? properties.get("field") : null;
+  const groupField = type === "rule_group" ? properties?.get("field") : null;
   const groupFieldDef = getFieldConfig(config, groupField) || {};
   if (groupFieldDef.mode == "array") {
     meta.errors.push(`Aggregation is not supported for ${groupField}`);
   }
 
-  const not = properties.get("not");
+  const not = properties?.get("not");
   const list = children
     .map((currentChild) => formatItem(currentChild, config, meta))
     .filter((currentChild) => typeof currentChild !== "undefined");
   if (!list.size)
     return undefined;
 
-  let conjunction = properties.get("conjunction");
+  let conjunction = properties?.get("conjunction");
   if (!conjunction)
     conjunction = defaultConjunction(config);
   const conjunctionDefinition = config.conjunctions[conjunction];
@@ -92,7 +92,7 @@ const buildFnToFormatOp = (operator, operatorDefinition) => {
     // between
     fn = (field, op, values, valueSrc, valueType, opDef, operatorOptions, fieldDef) => {
       const valFrom = values.first();
-      const valTo = values.get(1);
+      const valTo = values?.get(1);
       return `${field} ${sqlOp} ${valFrom} AND ${valTo}`;
     };
   }
@@ -100,14 +100,14 @@ const buildFnToFormatOp = (operator, operatorDefinition) => {
 };
 
 const formatRule = (item, config, meta) => {
-  const properties = item.get("properties") || new Map();
-  const field = properties.get("field");
-  let operator = properties.get("operator");
-  const operatorOptions = properties.get("operatorOptions");
-  const iValueSrc = properties.get("valueSrc");
-  const iValueType = properties.get("valueType");
-  const iValue = properties.get("value");
-  const asyncListValues = properties.get("asyncListValues");
+  const properties = item?.get("properties") || new Map();
+  const field = properties?.get("field");
+  let operator = properties?.get("operator");
+  const operatorOptions = properties?.get("operatorOptions");
+  const iValueSrc = properties?.get("valueSrc");
+  const iValueType = properties?.get("valueType");
+  const iValue = properties?.get("value");
+  const asyncListValues = properties?.get("asyncListValues");
   if (field == null || operator == null)
     return undefined;
 
@@ -135,8 +135,8 @@ const formatRule = (item, config, meta) => {
   let valueSrcs = [];
   let valueTypes = [];
   const fvalue = iValue.map((currentValue, ind) => {
-    const valueSrc = iValueSrc ? iValueSrc.get(ind) : null;
-    const valueType = iValueType ? iValueType.get(ind) : null;
+    const valueSrc = iValueSrc ? iValueSrc?.get(ind) : null;
+    const valueType = iValueType ? iValueType?.get(ind) : null;
     const cValue = completeValue(currentValue, valueSrc, config);
     const widget = getWidgetForFieldOp(config, field, operator, valueSrc);
     const fieldWidgetDefinition = omit(getFieldWidgetConfig(config, field, operator, widget, valueSrc), ["factory"]);
@@ -245,8 +245,8 @@ const formatField = (meta, config, field) => {
 
 
 const formatFunc = (meta, config, currentValue) => {
-  const funcKey = currentValue.get("func");
-  const args = currentValue.get("args");
+  const funcKey = currentValue?.get("func");
+  const args = currentValue?.get("args");
   const funcConfig = getFuncConfig(config, funcKey);
   const funcName = funcConfig.sqlFunc || funcKey;
 
@@ -254,10 +254,10 @@ const formatFunc = (meta, config, currentValue) => {
   for (const argKey in funcConfig.args) {
     const argConfig = funcConfig.args[argKey];
     const fieldDef = getFieldConfig(config, argConfig);
-    const argVal = args ? args.get(argKey) : undefined;
-    const argValue = argVal ? argVal.get("value") : undefined;
-    const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
-    const argAsyncListValues = argVal ? argVal.get("asyncListValues") : undefined;
+    const argVal = args ? args?.get(argKey) : undefined;
+    const argValue = argVal ? argVal?.get("value") : undefined;
+    const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
+    const argAsyncListValues = argVal ? argVal?.get("asyncListValues") : undefined;
     const formattedArgVal = formatValue(
       meta, config, argValue, argValueSrc, argConfig.type, fieldDef, argConfig, null, null, argAsyncListValues
     );

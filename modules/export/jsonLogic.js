@@ -59,9 +59,9 @@ export const jsonLogicFormat = (item, config) => {
 
 const formatItem = (item, config, meta, isRoot, parentField = null) => {
   if (!item) return undefined;
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const isLocked = properties.get("isLocked");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const isLocked = properties?.get("isLocked");
   const {lockedOp} = config.settings.jsonLogic;
   let ret;
   if (type === "group" || type === "rule_group") {
@@ -77,19 +77,19 @@ const formatItem = (item, config, meta, isRoot, parentField = null) => {
 
 
 const formatGroup = (item, config, meta, isRoot, parentField = null) => {
-  const type = item.get("type");
-  const properties = item.get("properties") || new Map();
-  const mode = properties.get("mode");
-  const children = item.get("children1");
-  const field = properties.get("field");
+  const type = item?.get("type");
+  const properties = item?.get("properties") || new Map();
+  const mode = properties?.get("mode");
+  const children = item?.get("children1");
+  const field = properties?.get("field");
   if (!children) return undefined;
   
-  let conjunction = properties.get("conjunction");
+  let conjunction = properties?.get("conjunction");
   if (!conjunction)
     conjunction = defaultConjunction(config);
   const conjunctionDefinition = config.conjunctions[conjunction];
   const conj = conjunctionDefinition.jsonLogicConj || conjunction.toLowerCase();
-  const not = properties.get("not");
+  const not = properties?.get("not");
   if (conj != "and" && conj != "or") {
     meta.errors.push(`Conjunction ${conj} is not supported`);
     return undefined;
@@ -97,7 +97,7 @@ const formatGroup = (item, config, meta, isRoot, parentField = null) => {
 
   const isRuleGroup = (type === "rule_group" && !isRoot);
   const groupField = isRuleGroup && mode != "struct" ? field : parentField;
-  const groupOperator = properties.get("operator");
+  const groupOperator = properties?.get("operator");
   const groupOperatorDefinition = groupOperator && getOperatorConfig(config, groupOperator, field) || null;
   const formattedValue = formatItemValue(config, properties, meta, groupOperator, parentField);
   const isGroup0 = isRuleGroup && (!groupOperator || groupOperatorDefinition.cardinality == 0);
@@ -164,11 +164,11 @@ const formatGroup = (item, config, meta, isRoot, parentField = null) => {
 
 
 const formatRule = (item, config, meta, parentField = null) => {
-  const properties = item.get("properties") || new Map();
-  const field = properties.get("field");
+  const properties = item?.get("properties") || new Map();
+  const field = properties?.get("field");
 
-  let operator = properties.get("operator");
-  let operatorOptions = properties.get("operatorOptions");
+  let operator = properties?.get("operator");
+  let operatorOptions = properties?.get("operatorOptions");
   operatorOptions = operatorOptions ? operatorOptions.toJS() : null;
   if (operatorOptions && !Object.keys(operatorOptions).length)
     operatorOptions = null;
@@ -204,14 +204,14 @@ const formatRule = (item, config, meta, parentField = null) => {
 
 
 const formatItemValue = (config, properties, meta, operator, parentField) => {
-  const field = properties.get("field");
-  const iValueSrc = properties.get("valueSrc");
-  const iValueType = properties.get("valueType");
+  const field = properties?.get("field");
+  const iValueSrc = properties?.get("valueSrc");
+  const iValueType = properties?.get("valueType");
   const fieldDefinition = getFieldConfig(config, field) || {};
   const operatorDefinition = getOperatorConfig(config, operator, field) || {};
   const cardinality = defaultValue(operatorDefinition.cardinality, 1);
-  const iValue = properties.get("value");
-  const asyncListValues = properties.get("asyncListValues");
+  const iValue = properties?.get("value");
+  const asyncListValues = properties?.get("asyncListValues");
   if (iValue == undefined)
     return undefined;
   
@@ -219,8 +219,8 @@ const formatItemValue = (config, properties, meta, operator, parentField) => {
   let valueTypes = [];
   let oldUsedFields = meta.usedFields;
   const fvalue = iValue.map((currentValue, ind) => {
-    const valueSrc = iValueSrc ? iValueSrc.get(ind) : null;
-    const valueType = iValueType ? iValueType.get(ind) : null;
+    const valueSrc = iValueSrc ? iValueSrc?.get(ind) : null;
+    const valueType = iValueType ? iValueType?.get(ind) : null;
     const cValue = completeValue(currentValue, valueSrc, config);
     const widget = getWidgetForFieldOp(config, field, operator, valueSrc);
     const fieldWidgetDef = omit(getFieldWidgetConfig(config, field, operator, widget, valueSrc), ["factory"]);
@@ -274,8 +274,8 @@ const formatValue = (meta, config, currentValue, valueSrc, valueType, fieldWidge
 
 
 const formatFunc = (meta, config, currentValue, parentField = null) => {
-  const funcKey = currentValue.get("func");
-  const args = currentValue.get("args");
+  const funcKey = currentValue?.get("func");
+  const args = currentValue?.get("args");
   const funcConfig = getFuncConfig(config, funcKey);
   if (!funcConfig.jsonLogic) {
     meta.errors.push(`Func ${funcKey} is not supported`);
@@ -286,9 +286,9 @@ const formatFunc = (meta, config, currentValue, parentField = null) => {
   for (const argKey in funcConfig.args) {
     const argConfig = funcConfig.args[argKey];
     const fieldDef = getFieldConfig(config, argConfig);
-    const argVal = args ? args.get(argKey) : undefined;
-    const argValue = argVal ? argVal.get("value") : undefined;
-    const argValueSrc = argVal ? argVal.get("valueSrc") : undefined;
+    const argVal = args ? args?.get(argKey) : undefined;
+    const argValue = argVal ? argVal?.get("value") : undefined;
+    const argValueSrc = argVal ? argVal?.get("valueSrc") : undefined;
     const formattedArgVal = formatValue(
       meta, config, argValue, argValueSrc, argConfig.type, fieldDef, argConfig, null, null, parentField
     );
@@ -385,7 +385,7 @@ const buildFnToFormatOp = (operator, operatorDefinition, formattedField, formatt
 };
 
 const formatLogic = (config, properties, formattedField, formattedValue, operator, operatorOptions = null, fieldDefinition = null, isRev = false) => {
-  const field = properties.get("field");
+  const field = properties?.get("field");
   const operatorDefinition = getOperatorConfig(config, operator, field) || {};
   let fn = typeof operatorDefinition.jsonLogic == "function" 
     ? operatorDefinition.jsonLogic 

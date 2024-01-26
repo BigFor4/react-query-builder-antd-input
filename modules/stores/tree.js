@@ -94,7 +94,7 @@ const removeRule = (state, path, config) => {
   const parentOperatorConfig = parentOperator ? getOperatorConfig(config, parentOperator, parentField) : null;
   const hasGroupCountRule = parentField && parentOperator && parentOperatorConfig.cardinality != 0; // && parentValue != undefined;
 
-  const isParentRuleGroup = parent.get("type") == "rule_group";
+  const isParentRuleGroup = parent?.get("type") == "rule_group";
   const isEmptyParentGroup = !hasChildren(state, parentPath);
   const canLeaveEmpty = isParentRuleGroup
     ? hasGroupCountRule && parentFieldConfig.initialEmptyWhere
@@ -176,7 +176,7 @@ const addItem = (state, path, type, id, properties, config, children = null) => 
   if (type == "switch_group")
     throw new Error("Can't add switch_group programmatically");
   const { maxNumberOfCases, maxNumberOfRules, maxNesting } = config.settings;
-  const rootType = state.get("type");
+  const rootType = state?.get("type");
   const isTernary = rootType == "switch_group";
   const targetItem = state.getIn(expandTreePath(path));
   const caseGroup = isTernary ? state.getIn(expandTreePath(path.take(2))) : null;
@@ -202,7 +202,7 @@ const addItem = (state, path, type, id, properties, config, children = null) => 
   const item = { type, id, properties };
   _addChildren1(config, item, children);
 
-  const isLastDefaultCase = type == "case_group" && hasChildren && targetChildren.last().get("children1") == null;
+  const isLastDefaultCase = type == "case_group" && hasChildren && targetChildren.last()?.get("children1") == null;
 
   if (canAdd) {
     const newChildren = new Immutable.OrderedMap({
@@ -214,9 +214,9 @@ const addItem = (state, path, type, id, properties, config, children = null) => 
       const last = targetChildren.last();
       const newChildrenWithLast = new Immutable.OrderedMap({
         [id]: new Immutable.Map(item),
-        [last.get("id")]: last
+        [last?.get("id")]: last
       });
-      state = state.deleteIn(expandTreePath(childrenPath, "children1", last.get("id")));
+      state = state.deleteIn(expandTreePath(childrenPath, "children1", last?.get("id")));
       state = state.mergeIn(childrenPath, newChildrenWithLast);
     } else {
       state = state.mergeIn(childrenPath, newChildren);
@@ -247,19 +247,19 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
   const from = getItemByPath(state, fromPath);
   const sourcePath = fromPath.pop();
   const source = fromPath.size > 1 ? getItemByPath(state, sourcePath) : null;
-  const sourceChildren = source ? source.get("children1") : null;
+  const sourceChildren = source ? source?.get("children1") : null;
 
   const to = getItemByPath(state, toPath);
   const targetPath = (placement == constants.PLACEMENT_APPEND || placement == constants.PLACEMENT_PREPEND) ? toPath : toPath.pop();
   const target = (placement == constants.PLACEMENT_APPEND || placement == constants.PLACEMENT_PREPEND)
     ? to
     : toPath.size > 1 ? getItemByPath(state, targetPath) : null;
-  const targetChildren = target ? target.get("children1") : null;
+  const targetChildren = target ? target?.get("children1") : null;
 
   if (!source || !target || !from)
     return state;
 
-  const isSameParent = (source.get("id") == target.get("id"));
+  const isSameParent = (source?.get("id") == target?.get("id"));
   const isSourceInsideTarget = targetPath.size < sourcePath.size
     && deepEqual(targetPath.toArray(), sourcePath.toArray().slice(0, targetPath.size));
   const isTargetInsideSource = targetPath.size > sourcePath.size
@@ -274,7 +274,7 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
 
   let newTargetChildren = targetChildren, newSourceChildren = sourceChildren;
   if (!isTargetInsideSource)
-    newSourceChildren = newSourceChildren.delete(from.get("id"));
+    newSourceChildren = newSourceChildren.delete(from?.get("id"));
   if (isSameParent) {
     newTargetChildren = newSourceChildren;
   } else if (isSourceInsideTarget) {
@@ -284,26 +284,26 @@ const moveItem = (state, fromPath, toPath, placement, config) => {
   if (placement == constants.PLACEMENT_BEFORE || placement == constants.PLACEMENT_AFTER) {
     newTargetChildren = Immutable.OrderedMap().withMutations(r => {
       for (let [itemId, item] of newTargetChildren.entries()) {
-        if (itemId == to.get("id") && placement == constants.PLACEMENT_BEFORE) {
-          r.set(from.get("id"), from);
+        if (itemId == to?.get("id") && placement == constants.PLACEMENT_BEFORE) {
+          r.set(from?.get("id"), from);
         }
 
         r.set(itemId, item);
 
-        if (itemId == to.get("id") && placement == constants.PLACEMENT_AFTER) {
-          r.set(from.get("id"), from);
+        if (itemId == to?.get("id") && placement == constants.PLACEMENT_AFTER) {
+          r.set(from?.get("id"), from);
         }
       }
     });
   } else if (placement == constants.PLACEMENT_APPEND) {
-    newTargetChildren = newTargetChildren.merge({ [from.get("id")]: from });
+    newTargetChildren = newTargetChildren.merge({ [from?.get("id")]: from });
   } else if (placement == constants.PLACEMENT_PREPEND) {
-    newTargetChildren = Immutable.OrderedMap({ [from.get("id")]: from }).merge(newTargetChildren);
+    newTargetChildren = Immutable.OrderedMap({ [from?.get("id")]: from }).merge(newTargetChildren);
   }
 
   if (isTargetInsideSource) {
     newSourceChildren = newSourceChildren.updateIn(expandTreeSubpath(targetSubpathFromSource, "children1"), (_oldChildren) => newTargetChildren);
-    newSourceChildren = newSourceChildren.delete(from.get("id"));
+    newSourceChildren = newSourceChildren.delete(from?.get("id"));
   }
 
   if (!isSameParent && !isSourceInsideTarget)
@@ -421,8 +421,8 @@ const setOperator = (state, path, newOperator, config) => {
   const operatorCardinality = operatorConfig ? defaultValue(operatorConfig.cardinality, 1) : null;
 
   state = state.updateIn(expandTreePath(path, "properties"), (map) => map.withMutations((current) => {
-    const currentField = current.get("field");
-    const currentOperatorOptions = current.get("operatorOptions");
+    const currentField = current?.get("field");
+    const currentOperatorOptions = current?.get("operatorOptions");
 
     const { canReuseValue, newValue, newValueSrc, newValueType, newValueError } = getNewValueForFieldOp(
       config, config, current, currentField, newOperator, "operator", true
@@ -590,9 +590,9 @@ const setValueSrc = (state, path, delta, srcKey, config) => {
     const { canReuseValue, newValue, newValueSrc, newValueType, newValueError } = getNewValueForFieldOp(
       config, config, properties, field, operator, "valueSrc", true
     );
-    if (!canReuseValue && newValueSrc.get(delta) == srcKey) {
-      state = state.setIn(expandTreePath(path, "properties", "value", delta + ""), newValue.get(delta));
-      state = state.setIn(expandTreePath(path, "properties", "valueType", delta + ""), newValueType.get(delta));
+    if (!canReuseValue && newValueSrc?.get(delta) == srcKey) {
+      state = state.setIn(expandTreePath(path, "properties", "value", delta + ""), newValue?.get(delta));
+      state = state.setIn(expandTreePath(path, "properties", "valueType", delta + ""), newValueType?.get(delta));
     }
   }
 
@@ -633,7 +633,7 @@ const calculateValueType = (value, valueSrc, config) => {
         calculatedValueType = fieldConfig.type;
       }
     } else if (valueSrc === "func") {
-      const funcKey = value.get("func");
+      const funcKey = value?.get("func");
       if (funcKey) {
         const funcConfig = getFuncConfig(config, funcKey);
         if (funcConfig) {
