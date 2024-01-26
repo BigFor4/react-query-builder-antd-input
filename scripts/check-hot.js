@@ -67,18 +67,11 @@ const end = (err) => {
   // Print webpack out
   const prcOut = cleanStr(prcOutBuf.toString());
   const prcErr = cleanStr(prcErrBuf.toString());
-  console.log('------------------ [ webpack out ]');
-  console.log(prcOut);
-  console.log('------------------ [ webpack err ]');
-  console.log(prcErr);
-  console.log('------------------');
 
   // Return 0 or 1
   if (err) {
-    console.log(err);
     process.exit(1);
   } else {
-    console.log("Seems like all right with webpack");
     process.exit(0);
   }
 };

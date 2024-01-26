@@ -364,17 +364,17 @@ export const getLightTree = (tree, children1AsArray = false) => {
   let newTree = tree;
 
   function _processNode (item, itemId) {
-    if (item.path)
+    if (item?.path)
       delete item.path;
     if (!children1AsArray && itemId)
       delete item.id;
-    let properties = item.properties;
+    let properties = item?.properties;
     if (properties) {
       if (properties.operatorOptions == null)
         delete properties.operatorOptions;
     }
 
-    const children = item.children1;
+    const children = item?.children1;
     if (children) {
       for (let id in children) {
         _processNode(children[id], id);

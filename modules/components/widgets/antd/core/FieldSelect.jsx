@@ -53,7 +53,7 @@ export default class FieldSelect extends PureComponent {
     fetching: false,
     dropdown: false,
     searchValue: this.props.selectedKey?.toString() || null,
-    type: 'attribute',
+    type: this.props.selectedKey?.toString() || 'attribute',
     modelVisible: false,
     checkedNodes: [],
     checkedNodesOld: [],
@@ -122,7 +122,6 @@ export default class FieldSelect extends PureComponent {
     this.setState((prevState) => ({ dropdown: !prevState.dropdown }));
   };
   onCheck = (checkedKeys) => {
-    console.log(checkedKeys)
     this.setState({ checkedNodes: checkedKeys })
   }
 

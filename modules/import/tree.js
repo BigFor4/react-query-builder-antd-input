@@ -148,7 +148,7 @@ function convertGroup(node) {
 function convertNode(node) {
   if (node.type === "operator") {
     return convertGroup(node);
-  } else if (node.type === "attribute") {
+  } else if (node?.type === "attribute" || node?.type === "folder") {
     return convertRule(node);
   }
 }
@@ -220,7 +220,7 @@ function jsTreeToImmutable(tree) {
         }
       }
     } else if (key == "value" && value?.get(0) && value?.get(0).toJS !== undefined) {
-      const valueJs = value?.get(0).toJS();
+      const valueJs = value?.get(0)?.toJS();
       if (valueJs.func) {
         outValue = value.toOrderedMap();
       } else {

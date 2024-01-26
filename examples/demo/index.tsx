@@ -6,13 +6,13 @@ import {
 import throttle from "lodash/throttle";
 import loadConfig from "./config";
 import axios from "axios";
-import { treeProject } from "./init_value";
+import { treeInit, treeProject } from "./init_value";
 const stringify = JSON.stringify;
 const { getTree, loadTree, uuid } = Utils;
 const preStyle = { backgroundColor: "darkgrey", margin: "10px", padding: "10px" };
 
 const initialSkin = "antd";
-const emptyInitValue: JsonTree = { id: uuid(), type: "group" };
+const emptyInitValue: JsonTree = treeInit;
 const loadedConfig = loadConfig(initialSkin);
 let initValue = emptyInitValue;
 let initTree: ImmutableTree;
@@ -76,7 +76,6 @@ const DemoQueryBuilder: React.FC = () => {
 
   const onConfigChanged = (e: Event) => {
     const { detail: { config, _initTree, _initValue } } = e as CustomEvent<CustomEventDetail>;
-    console.log("Updating config...");
     setState({
       ...state,
       config,
@@ -84,7 +83,6 @@ const DemoQueryBuilder: React.FC = () => {
     initTree = _initTree;
     initValue = _initValue;
   };
-  console.log(treeProject)
   const renderBuilder = useCallback((bprops: BuilderProps) => {
     memo.current._actions = bprops.actions;
     return (

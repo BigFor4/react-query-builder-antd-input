@@ -4,35 +4,14 @@ export const treeInit =
   "type": "operator",
   "children": [
     {
-      "title": "Attribute.Length < 100",
-      "type": "attribute"
-    },
-    {
-      "title": "Attribute.Height > 200",
-      "type": "attribute"
-    },
-    {
-      "title": "AND",
-      "type": "operator",
-      "children": [
-        {
-          "title": "Attribute.Width > 100",
-          "type": "attribute"
-        },
-        {
-          "title": "OR",
-          "type": "operator",
-          "children": [
-            {
-              "title": "Attribute.Value < 100",
-              "type": "attribute"
-            },
-            {
-              "title": "Attribute.Volume > 100",
-              "type": "attribute"
-            }
-          ]
-        }
+      "title": "Attribute.Delprosjekt == 01",
+      "type": "folder",
+      "arrayModel": [
+        "eb1e1226-39eb-4b77-b2f3-3d4dea9c5d6b",
+        "86ee46c6-3f4c-4bef-ab9b-3074d281990a",
+        "b975c576-5e43-4a41-b8db-5787914ae0dc",
+        "72844eb7-93d0-4eb1-92c1-9064234e72af",
+        "30d5d16d-eda4-42ae-9615-b9a03c736ce8"
       ]
     }
   ]
