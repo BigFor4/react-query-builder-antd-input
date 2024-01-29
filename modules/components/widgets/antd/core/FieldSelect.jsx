@@ -240,7 +240,7 @@ export default class FieldSelect extends PureComponent {
             ) : null}
             {this.state.listProjectOption &&
               this.state.listProjectOption.map((d) => (
-                <Option label={this.splitTextObjectInfo(d.inf)} key={d?._id || d?.id} value={d?._id || d?.id}>
+                <Option label={this.splitTextObjectInfo(d.inf)} key={d?._id || d?.id} value={this.splitTextObjectInfo(d.inf)}>
                   {this.splitTextObjectInfo(d.inf)}
                 </Option>
               ))}
