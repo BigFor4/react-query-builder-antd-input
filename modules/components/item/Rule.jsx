@@ -128,6 +128,7 @@ class Rule extends PureComponent {
       config={config}
       selectedField={value}
       isValue={'type'}
+      typeData={value}
       arrayModel={arrayModel}
       setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
       parentField={this.props.parentField}
@@ -142,11 +143,13 @@ class Rule extends PureComponent {
   renderField() {
     const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
+    const typeData = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
     return <FieldWrapper
       key="field"
       classname={"rule--field"}
       config={config}
       isValue={'attribute'}
+      typeData={typeData}
       selectedField={this.props.selectedField}
       setField={!immutableFieldsMode ? this.props.setField : dummyFn}
       parentField={this.props.parentField}
@@ -160,6 +163,7 @@ class Rule extends PureComponent {
   renderWidget() {
     const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
+    const typeData = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
     const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.value : this.props.value?.toJS()?.[0]?.value : '';
     return <FieldWrapper
       key="values"
@@ -167,6 +171,7 @@ class Rule extends PureComponent {
       config={config}
       selectedField={value}
       isValue={'value'}
+      typeData={typeData}
       setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
       parentField={this.props.parentField}
       readonly={immutableFieldsMode || isLocked}
@@ -183,10 +188,11 @@ class Rule extends PureComponent {
       selectedFieldPartsLabels, selectedFieldWidgetConfig, showOperator, showOperatorLabel
     } = this.meta;
     const { immutableOpsMode } = config.settings;
-
+    const typeData = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
     return <OperatorWrapper
       key="operator"
       config={config}
+      typeData={typeData}
       selectedField={this.props.selectedField}
       selectedOperator={this.props.selectedOperator}
       setOperator={!immutableOpsMode ? this.props.setOperator : dummyFn}

@@ -75,6 +75,7 @@ export default class Operator extends PureComponent {
     selectedField: PropTypes.string,
     selectedOperator: PropTypes.string,
     readonly: PropTypes.bool,
+    typeData: PropTypes.string,
     //actions
     setOperator: PropTypes.func.isRequired,
   };
@@ -141,7 +142,7 @@ export default class Operator extends PureComponent {
   }
 
   render() {
-    const { config, customProps, setOperator, readonly, id, groupId } = this.props;
+    const { config, customProps, setOperator, readonly, id, groupId, typeData } = this.props;
     const { renderOperator } = config.settings;
     const renderProps = {
       id,
@@ -151,6 +152,7 @@ export default class Operator extends PureComponent {
       readonly,
       setField: setOperator,
       isValue: 'operator',
+      typeData,
       ...this.meta
     };
     if (!renderProps.items)

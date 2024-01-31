@@ -46,6 +46,7 @@ export default class FieldSelect extends PureComponent {
     isValue: PropTypes.bool,
     arrayModel: PropTypes.array,
     treeProject: PropTypes.object,
+    typeData: PropTypes.string
   };
 
   state = {
@@ -63,9 +64,6 @@ export default class FieldSelect extends PureComponent {
     if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
       this.props.setField(value);
     } else {
-      if (this.props.isValue === 'type') {
-        this.state.type = value;
-      }
       this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes});
     }
   };
@@ -140,7 +138,8 @@ export default class FieldSelect extends PureComponent {
     const {
       config, customProps, items, placeholder,
       selectedKey, selectedLabel, selectedAltLabel, selectedFullLabel, readonly,
-      isValue, treeProject
+      isValue, treeProject,
+      typeData
     } = this.props;
     const dropdownPlacement = config.settings.dropdownPlacement;
     const dropdownAlign = dropdownPlacement ? BUILT_IN_PLACEMENTS[dropdownPlacement] : undefined;
@@ -173,7 +172,7 @@ export default class FieldSelect extends PureComponent {
               </Option>
             </Select>
             {
-              this.state.type === 'folder' && (<Button style={{ marginLeft: 10 }} onClick={() => this.onClickHideShowModal(true)}>
+              typeData === 'folder' && (<Button style={{ marginLeft: 10 }} onClick={() => this.onClickHideShowModal(true)}>
                 Data tree
               </Button>)
             }
@@ -181,7 +180,7 @@ export default class FieldSelect extends PureComponent {
         );
         break;
       case isValue === 'operator':
-        res = (
+        res = typeData !== 'folder' && (
           <Select
             dropdownAlign={dropdownAlign}
             dropdownMatchSelectWidth={false}
@@ -198,7 +197,7 @@ export default class FieldSelect extends PureComponent {
         );
         break;
       case (isValue === 'value' || !this.props.searchObject):
-        res = (
+        res = typeData !== 'folder' && (
           <Input
             style={{ width: 150, marginLeft: 10 }}
             placeholder={'Value'}
@@ -211,7 +210,7 @@ export default class FieldSelect extends PureComponent {
         break;
 
       case isValue === 'attribute':
-        res = (
+        res = typeData !== 'folder' && (
           <Select
             allowClear
             style={{ width: 150, marginLeft: 10 }}
