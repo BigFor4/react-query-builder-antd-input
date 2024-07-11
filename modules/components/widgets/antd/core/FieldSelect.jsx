@@ -5,11 +5,9 @@ import PropTypes, { array } from "prop-types";
 import debounce from 'lodash/debounce';
 const { Option, OptGroup } = Select;
 const { DirectoryTree } = Tree
-
 const isModel = (node) => {
   return !node ? false : (node && node.modelId) ? true : false;
 }
-
 const traversalTree = (data, parentKey) => {
   return data.map(item => {
     if (item.children) {
@@ -48,7 +46,6 @@ export default class FieldSelect extends PureComponent {
     treeProject: PropTypes.object,
     typeData: PropTypes.string
   };
-
   state = {
     listProjectOption: [],
     lastFetchId: 0,
@@ -67,7 +64,6 @@ export default class FieldSelect extends PureComponent {
       this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes});
     }
   };
-
   onChangeInput = (e) => {
     const value = e.target.value;
     if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
@@ -76,7 +72,6 @@ export default class FieldSelect extends PureComponent {
       this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes });
     }
   };
-
   filterOption = (input, option) => {
     const dataForFilter = option;
     const keysForFilter = ["title", "value", "grouplabel", "label"];
@@ -85,7 +80,6 @@ export default class FieldSelect extends PureComponent {
       .join("\0");
     return valueForFilter.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
-
   handleSearchObjectInfo = debounce(async (value) => {
     this.setState({ listProjectOption: [], fetching: true, searchValue: value || null });
     this.props.setField(value);
@@ -103,7 +97,6 @@ export default class FieldSelect extends PureComponent {
       }
     }
   }, 500);
-
   splitAtFirstSpecialCharacter = (str, character) => {
     if (!str) return [];
     var i = str.indexOf(character);
@@ -111,29 +104,39 @@ export default class FieldSelect extends PureComponent {
       return [str.substring(0, i), str.substring(i + 1)];
     } else return [str];
   };
-
   splitTextObjectInfo = (text) => {
     const value = this.splitAtFirstSpecialCharacter(text, '=');
     return value ? value[0] : '';
   };
-
+  getObjectInfoV2Label(inf) {
+    let value = '';
+    const regexA = /^(.*)=/;
+    const regexB = /"label":"(.*?)"/;
+    let match = inf.match(regexA);
+    if (match && match[1]) {
+      value = match[1].trim();
+    } else {
+      match = inf.match(regexB);
+      if (match && match[1]) {
+        value = match[1].trim();
+      }
+    }
+    return value;
+  }
   handleClick = () => {
     this.setState((prevState) => ({ dropdown: !prevState.dropdown }));
   };
   onCheck = (checkedKeys) => {
     this.setState({ checkedNodes: checkedKeys })
   }
-
   onClickHideShowModal = (data) => {
     this.setState({ modelVisible: data })
   }
-
   onOk = () => {
     this.setState({ checkedNodesOld: this.state.checkedNodes })
     this.props.setField({ value: this.props.selectedKey, type: this.props.isValue, arrayModel: this.state.checkedNodes});
     this.onClickHideShowModal(false)
   }
-
   render() {
     const {
       config, customProps, items, placeholder,
@@ -208,7 +211,6 @@ export default class FieldSelect extends PureComponent {
           />
         );
         break;
-
       case isValue === 'attribute':
         res = typeData !== 'folder' && (
           <Select
@@ -239,8 +241,8 @@ export default class FieldSelect extends PureComponent {
             ) : null}
             {this.state.listProjectOption &&
               this.state.listProjectOption.map((d) => (
-                <Option label={this.splitTextObjectInfo(d.inf)} key={d?._id || d?.id} value={this.splitTextObjectInfo(d.inf)}>
-                  {this.splitTextObjectInfo(d.inf)}
+                <Option label={this.getObjectInfoV2Label(d.inf)} key={d?._id || d?.id} value={this.getObjectInfoV2Label(d.inf)}>
+                  {this.getObjectInfoV2Label(d.inf)}
                 </Option>
               ))}
           </Select>
@@ -285,7 +287,6 @@ export default class FieldSelect extends PureComponent {
       </Modal>
     </div>;
   }
-
   renderSelectItems(fields, level = 0) {
     return fields?.map(field => {
       const { items, key, path, label, fullLabel, altLabel, tooltip, grouplabel, disabled } = field;
