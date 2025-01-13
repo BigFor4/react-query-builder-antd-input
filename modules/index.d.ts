@@ -778,13 +778,9 @@ export interface LocaleSettings {
     mui?: Object,
   },
   valueLabel?: string,
-  valuePlaceholder?: string,
   fieldLabel?: string,
   operatorLabel?: string,
-  fieldPlaceholder?: string,
-  funcPlaceholder?: string,
   funcLabel?: string,
-  operatorPlaceholder?: string,
   lockLabel?: string,
   lockedLabel?: string,
   deleteLabel?: string,
@@ -809,6 +805,24 @@ export interface LocaleSettings {
     okType?: string,
     cancelText?: string,
   },
+  typeOptions:{
+    attribute: string,
+    folder: string,
+    dataTree: string,
+  },
+  placeholders?: {
+    fieldSelectPlaceholder?: string,
+    valuePlaceholder?: string,
+    fieldPlaceholder?: string,
+    funcPlaceholder?: string,
+    operatorPlaceholder?: string,
+  }
+  treeModal?: {
+    title?: string,
+    okText?: string,
+    okType?: string,
+    cancelText?: string,
+  }
 }
 
 export interface RenderSettings {

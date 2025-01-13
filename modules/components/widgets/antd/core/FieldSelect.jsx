@@ -144,6 +144,7 @@ export default class FieldSelect extends PureComponent {
       isValue, treeProject,
       typeData
     } = this.props;
+    const {typeOptions, placeholders, treeModal} = config.settings;
     const dropdownPlacement = config.settings.dropdownPlacement;
     const dropdownAlign = dropdownPlacement ? BUILT_IN_PLACEMENTS[dropdownPlacement] : undefined;
     let tooltipText = selectedAltLabel || selectedFullLabel;
@@ -160,23 +161,23 @@ export default class FieldSelect extends PureComponent {
               dropdownAlign={dropdownAlign}
               dropdownMatchSelectWidth={false}
               style={{ width: 100, marginLeft: 10 }}
-              placeholder={'Type'}
+              placeholder={placeholders.fieldSelectPlaceholder}
               onChange={this.onChange}
               value={typeof selectedKey === 'string' ? selectedKey : undefined}
               filterOption={this.filterOption}
               disabled={readonly}
               {...customProps}
             >
-              <Option label={'Attribute'} key={'attribute'} value={'attribute'}>
-                Attribute
+              <Option label={typeOptions.attribute} key={'attribute'} value={'attribute'}>
+                {typeOptions.attribute}
               </Option>
-              <Option label={'Folder'} key={'folder'} value={'folder'}>
-                Folder
+              <Option label={typeOptions.folder} key={'folder'} value={'folder'}>
+                {typeOptions.folder}
               </Option>
             </Select>
             {
               typeData === 'folder' && (<Button style={{ marginLeft: 10 }} onClick={() => this.onClickHideShowModal(true)}>
-                Data tree
+                {typeOptions.dataTree}
               </Button>)
             }
           </>
@@ -203,7 +204,7 @@ export default class FieldSelect extends PureComponent {
         res = typeData !== 'folder' && (
           <Input
             style={{ width: 150, marginLeft: 10 }}
-            placeholder={'Value'}
+            placeholder={placeholders.valuePlaceholder}
             onChange={this.onChangeInput}
             value={typeof selectedKey === 'string' ? selectedKey : undefined}
             disabled={readonly}
@@ -220,7 +221,7 @@ export default class FieldSelect extends PureComponent {
             showSearch
             value={typeof selectedKey === 'string' ? selectedKey : undefined}
             optionFilterProp="children"
-            placeholder={'Attribute'}
+            placeholder={placeholders.fieldPlaceholder}
             notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
             filterOption={false}
             onChange={this.onChange}
@@ -255,7 +256,7 @@ export default class FieldSelect extends PureComponent {
     return <div>
       {res}
       <Modal
-        title="Select 4D Node in Data Tree"
+        title={treeModal.title}
         centered
         zIndex={10001}
         visible={this.state.modelVisible}
@@ -264,6 +265,8 @@ export default class FieldSelect extends PureComponent {
           this.onClickHideShowModal(false)
           this.setState({ checkedNodes: this.state.checkedNodesOld })
         }}
+        okText={treeModal.okText}
+        cancelText={treeModal.cancelText}
         onOk={() => this.onOk()}
         style={{
           maxHeight: 'calc(100vh - 20px)',

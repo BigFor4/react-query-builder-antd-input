@@ -4,13 +4,16 @@ import {
   Operators, Widgets, Fields, Config, Types, Conjunctions, Settings, LocaleSettings, Funcs,
 } from "react-query-builder-antd-input";
 import AntdConfig from "react-query-builder-antd-input/config/antd";
+import { localizers } from "./localizers";
 
 const skinToConfig: Record<string, Config> = {
   vanilla: BasicConfig,
   antd: AntdConfig,
 };
 
-export default (skin: string) => {
+type Lang = keyof typeof localizers;
+
+export default (skin: string, lang: Lang = "fi") => {
   const InitialConfig = skinToConfig[skin] as BasicConfig;
 
   const conjunctions: Conjunctions = {
@@ -21,13 +24,19 @@ export default (skin: string) => {
       "jsonLogicConj": "nor",
       "sqlConj": "NOR",
       "spelConj": "nor",
+      "formatConj": (children, conj, not, isForDisplay) => `(${children.join(` ${conj} `)})`,
+      "sqlFormatConj": (children, conj, not) => `(${children.join(` ${conj} `)})`,
+      "spelFormatConj": (children, conj, not) => `(${children.join(` ${conj} `)})`,
     },
     "XOR": {
-      "label": "Nor",
-      "mongoConj": "$nor",
-      "jsonLogicConj": "nor",
-      "sqlConj": "NOR",
-      "spelConj": "nor",
+      "label": "Xor",
+      "mongoConj": "$xor",
+      "jsonLogicConj": "xor",
+      "sqlConj": "XOR",
+      "spelConj": "xor",
+      "formatConj": (children, conj, not, isForDisplay) => `(${children.join(` ${conj} `)})`,
+      "sqlFormatConj": (children, conj, not) => `(${children.join(` ${conj} `)})`,
+      "spelFormatConj": (children, conj, not) => `(${children.join(` ${conj} `)})`,
     }
   };
   const operators: Operators = {
@@ -54,39 +63,7 @@ export default (skin: string) => {
       excludeOperators: ["proximity"],
     },
   };
-
-
-  const localeSettings: LocaleSettings = {
-    valueLabel: "Value",
-    valuePlaceholder: "Value",
-    fieldLabel: "Field",
-    operatorLabel: "Operator",
-    funcLabel: "Function",
-    fieldPlaceholder: "Attribute",
-    funcPlaceholder: "Select function",
-    operatorPlaceholder: "Select operator",
-    lockLabel: "Lock",
-    lockedLabel: "Locked",
-    deleteLabel: null,
-    addGroupLabel: "Add group",
-    addRuleLabel: "Add rule",
-    addSubRuleLabel: "Add sub rule",
-    delGroupLabel: null,
-    notLabel: "Not",
-    valueSourcesPopupTitle: "Select value source",
-    removeRuleConfirmOptions: {
-      title: "Are you sure delete this rule?",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "Cancel"
-    },
-    removeGroupConfirmOptions: {
-      title: "Are you sure delete this group?",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "Cancel"
-    },
-  };
+  const localeSettings: LocaleSettings = localizers[lang];
 
   const settings: Settings = {
     ...InitialConfig.settings,
