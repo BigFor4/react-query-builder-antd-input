@@ -114,7 +114,7 @@ export default class Operator extends PureComponent {
     const isOpSelected = !!selectedOperator;
     const currOp = isOpSelected ? operatorOptions[selectedOperator] : null;
     const selectedOpts = currOp || {};
-    const placeholder = this.props.config.settings.operatorPlaceholder;
+    const placeholder = this.props.config.settings.placeholders.operatorPlaceholder;
     const selectedKey = selectedOperator;
     const selectedKeys = isOpSelected ? [selectedKey] : null;
     const selectedPath = selectedKeys;
