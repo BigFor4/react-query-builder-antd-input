@@ -132,7 +132,7 @@ const DemoQueryBuilder: React.FC = () => {
       }, {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGQzNTgyYzllNDNmMDAxMmEyMWQ0YSIsImlhdCI6MTcwMzc1MzE2MiwiZXhwIjoxNzA2MzQ1MTYyfQ.lBphR-qdLuJTS11x3Pi4mkefZW-oNN7NWFSy9yzZ1AM",
+            "Bearer eyJhbGciMzQ1MTYyfQ.lBphR-qdLuJTS11x3Pi4mkefZW-oNN7NWFSy9yzZ1AM",
         },
       });
       if (response.data) {
