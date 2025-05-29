@@ -43,6 +43,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   },
@@ -63,6 +65,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   ),
@@ -83,6 +87,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   ),
@@ -103,6 +109,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   ),
@@ -123,6 +131,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   ),
@@ -143,6 +153,8 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
       tree={props.tree}
       searchObject={props.searchObject}
+      typeModelOptions={props.typeModelOptions}
+      modeQueryOptions={props.modeQueryOptions}
       treeProject={props.treeProject}
     />
   ),
@@ -166,6 +178,8 @@ class Item extends PureComponent {
     isParentLocked: PropTypes.bool,
     tree: PropTypes.any,
     searchObject: PropTypes.func,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
     treeProject: PropTypes.object,
   };
 

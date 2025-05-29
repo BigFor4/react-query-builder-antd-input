@@ -20,7 +20,10 @@ export default class Field extends PureComponent {
     isValue: PropTypes.bool,
     typeData: PropTypes.string,
     arrayModel: PropTypes.array,
+    dataType: PropTypes.string,
     searchObject: PropTypes.func,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
     setField: PropTypes.func.isRequired,
     treeProject: PropTypes.object,
   };
@@ -42,7 +45,7 @@ export default class Field extends PureComponent {
     }
   }
 
-  getMeta({selectedField, config, parentField, isValue, arrayModel, typeData}) {
+  getMeta({selectedField, config, parentField, isValue, arrayModel, typeData, dataType}) {
     const selectedKey = selectedField;
     const {maxLabelsLength, fieldSeparatorDisplay, fieldPlaceholder, fieldSeparator, valuePlaceholder} = config.settings;
     const isFieldSelected = !!selectedField;
@@ -66,7 +69,7 @@ export default class Field extends PureComponent {
 
     return {
       placeholder, items, parentField,
-      arrayModel,
+      arrayModel, dataType,
       selectedKey, selectedKeys, selectedPath, selectedLabel, selectedOpts, selectedAltLabel, selectedFullLabel,
     };
   }
@@ -129,7 +132,7 @@ export default class Field extends PureComponent {
   }
 
   render() {
-    const {config, customProps, setField, readonly, id, groupId, searchObject, isValue, treeProject, arrayModel, typeData} = this.props;
+    const {config, customProps, setField, readonly, id, groupId, searchObject, typeModelOptions, modeQueryOptions, isValue, treeProject, arrayModel, typeData, dataType} = this.props;
     const {renderField} = config.settings;
     const renderProps = {
       id,
@@ -139,9 +142,12 @@ export default class Field extends PureComponent {
       readonly,
       setField,
       searchObject,
+      typeModelOptions,
+      modeQueryOptions,
       treeProject,
       isValue,
       arrayModel,
+      dataType,
       typeData,
       ...this.meta
     };

@@ -29,6 +29,8 @@ const createGroupContainer = (Group) =>
       isDraggingTempo: PropTypes.bool,
       tree: PropTypes.any,
       searchObject: PropTypes.func,
+      typeModelOptions: PropTypes.array,
+      modeQueryOptions: PropTypes.array,
       treeProject: PropTypes.object,
     };
 
@@ -185,6 +187,8 @@ const createGroupContainer = (Group) =>
               actions={this.props.actions}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              typeModelOptions={this.props.typeModelOptions}
+              modeQueryOptions={this.props.modeQueryOptions}
               treeProject={this.props.treeProject}
               reordableNodesCnt={this.props.reordableNodesCnt}
               totalRulesCnt={this.props.totalRulesCnt}
@@ -233,6 +237,8 @@ const createGroupContainer = (Group) =>
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              typeModelOptions={this.props.typeModelOptions}
+              modeQueryOptions={this.props.modeQueryOptions}
               treeProject={this.props.treeProject}
             />
           ]}

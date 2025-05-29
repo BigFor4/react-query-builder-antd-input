@@ -15,6 +15,8 @@ class Query extends Component {
     tree: PropTypes.any,
     searchObject: PropTypes.func,
     treeProject: PropTypes.object,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
   };
 
   constructor(props) {

@@ -469,6 +469,7 @@ const setValue = (state, path, dataUpdate, config) => {
   let newField = dataUpdate?.value || dataUpdate;
   const typeUpdate = dataUpdate?.type;
   const arrayModel = dataUpdate?.arrayModel;
+  const dataType = dataUpdate?.dataType;
   const currentType = state.getIn(expandTreePath(path, "type"));
   const wasRuleGroup = currentType == "rule_group";
   const pathJS = path.toJS();
@@ -487,6 +488,7 @@ const setValue = (state, path, dataUpdate, config) => {
     dataValue[typeUpdate] = newField;
     if (typeUpdate === 'type') {
       dataValue.arrayModel = arrayModel || [];
+      dataValue.dataType = dataType || "";
     }
     valueField = new Immutable.fromJS([dataValue]);
     newOperator = newFieldConfig.properties.operator;

@@ -29,6 +29,7 @@ export const localizers = {
       attribute: "Attribute",
       folder: "Folder",
       dataTree: "Data tree",
+      dataType: "Data type",
     },
     placeholders: {
       fieldSelectPlaceholder: "Type",
@@ -74,6 +75,7 @@ export const localizers = {
       attribute: "Attribuutti",
       folder: "Kansio",
       dataTree: "Datan puu",
+      dataType: "Datan tyyppi",
     },
     placeholders: {
       fieldSelectPlaceholder: "Tyyppi",

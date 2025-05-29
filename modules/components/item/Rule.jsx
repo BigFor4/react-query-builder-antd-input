@@ -45,6 +45,8 @@ class Rule extends PureComponent {
     reordableNodesCnt: PropTypes.number,
     tree: PropTypes.any,
     searchObject: PropTypes.func,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
     treeProject: PropTypes.object,
   };
 
@@ -122,6 +124,7 @@ class Rule extends PureComponent {
     const { immutableFieldsMode } = config.settings;
     const value = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.type : this.props.value?.toJS()?.[0]?.type : '';
     const arrayModel = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.arrayModel : this.props.value?.toJS()?.[0]?.arrayModel : '';
+    const dataType = this.props.value ? Array.isArray(this.props.value) ? this.props.value?.[0]?.dataType : this.props.value?.toJS()?.[0]?.dataType : '';
     return <FieldWrapper
       key="type"
       classname={"rule--value"}
@@ -129,6 +132,7 @@ class Rule extends PureComponent {
       selectedField={value}
       isValue={'type'}
       typeData={value}
+      dataType={dataType}
       arrayModel={arrayModel}
       setField={!immutableFieldsMode ? this.props.setValue : dummyFn}
       parentField={this.props.parentField}
@@ -136,6 +140,8 @@ class Rule extends PureComponent {
       id={this.props.id}
       groupId={this.props.groupId}
       searchObject={this.props.searchObject}
+      typeModelOptions={this.props.typeModelOptions}
+      modeQueryOptions={this.props.modeQueryOptions}
       treeProject={this.props.treeProject}
     />;
   }
@@ -157,6 +163,8 @@ class Rule extends PureComponent {
       id={this.props.id}
       groupId={this.props.groupId}
       searchObject={this.props.searchObject}
+      typeModelOptions={this.props.typeModelOptions}
+      modeQueryOptions={this.props.modeQueryOptions}
       treeProject={this.props.treeProject}
     />;
   }
@@ -178,6 +186,8 @@ class Rule extends PureComponent {
       id={this.props.id}
       groupId={this.props.groupId}
       searchObject={this.props.searchObject}
+      typeModelOptions={this.props.typeModelOptions}
+      modeQueryOptions={this.props.modeQueryOptions}
       treeProject={this.props.treeProject}
     />;
   }

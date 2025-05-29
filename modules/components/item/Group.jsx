@@ -40,6 +40,8 @@ export class BasicGroup extends PureComponent {
     actions: PropTypes.object.isRequired,
     tree: PropTypes.any,
     searchObject: PropTypes.func,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
     treeProject: PropTypes.object,
   };
 
@@ -187,7 +189,7 @@ export class BasicGroup extends PureComponent {
   };
 
   renderActions() {
-    const { config, addRule, addGroup, isLocked, isTrueLocked, id, tree, searchObject, treeProject } = this.props;
+    const { config, addRule, addGroup, isLocked, isTrueLocked, id, tree, searchObject, treeProject, typeModelOptions, modeQueryOptions } = this.props;
 
     return <GroupActions
       config={config}
@@ -203,6 +205,8 @@ export class BasicGroup extends PureComponent {
       id={id}
       tree={tree}
       searchObject={searchObject}
+      typeModelOptions={typeModelOptions}
+      modeQueryOptions={modeQueryOptions}
       treeProject={treeProject}
     />;
   }
@@ -252,6 +256,8 @@ export class BasicGroup extends PureComponent {
         isParentLocked={isLocked}
         tree={this.props.tree}
         searchObject={this.props.searchObject}
+        typeModelOptions={this.props.typeModelOptions}
+        modeQueryOptions={this.props.modeQueryOptions}
         treeProject={this.props.treeProject}
       />
     );
@@ -303,7 +309,8 @@ export class BasicGroup extends PureComponent {
     const {
       config, children1, id,
       selectedConjunction, setConjunction, not, setNot, isLocked,
-      tree, searchObject, treeProject
+      tree, searchObject, treeProject, 
+      typeModelOptions, modeQueryOptions
     } = this.props;
 
     const { immutableGroupsMode, renderConjs: Conjs, showNot: _showNot, notLabel } = config.settings;
@@ -328,6 +335,8 @@ export class BasicGroup extends PureComponent {
       isLocked: isLocked,
       tree: tree,
       searchObject: searchObject,
+      typeModelOptions: typeModelOptions,
+      modeQueryOptions: modeQueryOptions,
       treeProject: treeProject
     };
     return <Conjs {...renderProps} />;

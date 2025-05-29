@@ -808,6 +808,7 @@ export interface LocaleSettings {
   typeOptions:{
     attribute: string,
     folder: string,
+    dataType: string,
     dataTree: string,
   },
   placeholders?: {

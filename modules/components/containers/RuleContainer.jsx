@@ -31,6 +31,8 @@ const createRuleContainer = (Rule) =>
       isDraggingTempo: PropTypes.bool,
       tree: PropTypes.any,
       searchObject: PropTypes.func,
+      typeModelOptions: PropTypes.array,
+      modeQueryOptions: PropTypes.array,
       treeProject: PropTypes.object,
     };
 
@@ -142,6 +144,8 @@ const createRuleContainer = (Rule) =>
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              typeModelOptions={this.props.typeModelOptions}
+              modeQueryOptions={this.props.modeQueryOptions}
               treeProject={this.props.treeProject}
             /> : null
             ,
@@ -175,6 +179,8 @@ const createRuleContainer = (Rule) =>
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
               tree={this.props.tree}
               searchObject={this.props.searchObject}
+              typeModelOptions={this.props.typeModelOptions}
+              modeQueryOptions={this.props.modeQueryOptions}
               treeProject={this.props.treeProject}
             />
           ]}

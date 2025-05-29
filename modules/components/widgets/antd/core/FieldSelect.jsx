@@ -41,8 +41,11 @@ export default class FieldSelect extends PureComponent {
     readonly: PropTypes.bool,
     setField: PropTypes.func.isRequired,
     searchObject: PropTypes.func,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
     isValue: PropTypes.bool,
     arrayModel: PropTypes.array,
+    dataType: PropTypes.string,
     treeProject: PropTypes.object,
     typeData: PropTypes.string
   };
@@ -56,20 +59,25 @@ export default class FieldSelect extends PureComponent {
     modelVisible: false,
     checkedNodes: Array.isArray(this.props.arrayModel) ? this.props.arrayModel : [],
     checkedNodesOld: Array.isArray(this.props.arrayModel) ? this.props.arrayModel : [],
+    dataTypeSelected: this.props.dataType || '',
   };
   onChange = (value) => {
     if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
       this.props.setField(value);
     } else {
-      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes});
+      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes, dataType: this.state.dataTypeSelected });
     }
   };
+  onChangeDataType = (value) => {
+    this.setState({ dataTypeSelected: value });
+    this.props.setField({ value: this.props.selectedKey, type: this.props.isValue, arrayModel: this.state.checkedNodes, dataType: value });
+  }
   onChangeInput = (e) => {
     const value = e.target.value;
     if (this.props.isValue === 'attribute' || this.props.isValue === 'operator') {
       this.props.setField(value);
     } else {
-      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes });
+      this.props.setField({ value, type: this.props.isValue, arrayModel: this.state.checkedNodes, dataType: this.state.dataTypeSelected });
     }
   };
   filterOption = (input, option) => {
@@ -134,17 +142,17 @@ export default class FieldSelect extends PureComponent {
   }
   onOk = () => {
     this.setState({ checkedNodesOld: this.state.checkedNodes })
-    this.props.setField({ value: this.props.selectedKey, type: this.props.isValue, arrayModel: this.state.checkedNodes});
+    this.props.setField({ value: this.props.selectedKey, type: this.props.isValue, arrayModel: this.state.checkedNodes });
     this.onClickHideShowModal(false)
   }
   render() {
     const {
       config, customProps, items, placeholder,
       selectedKey, selectedLabel, selectedAltLabel, selectedFullLabel, readonly,
-      isValue, treeProject,
+      isValue, treeProject, typeModelOptions, modeQueryOptions,
       typeData
     } = this.props;
-    const {typeOptions, placeholders, treeModal} = config.settings;
+    const { typeOptions, placeholders, treeModal } = config.settings;
     const dropdownPlacement = config.settings.dropdownPlacement;
     const dropdownAlign = dropdownPlacement ? BUILT_IN_PLACEMENTS[dropdownPlacement] : undefined;
     let tooltipText = selectedAltLabel || selectedFullLabel;
@@ -168,17 +176,38 @@ export default class FieldSelect extends PureComponent {
               disabled={readonly}
               {...customProps}
             >
-              <Option label={typeOptions.attribute} key={'attribute'} value={'attribute'}>
-                {typeOptions.attribute}
-              </Option>
-              <Option label={typeOptions.folder} key={'folder'} value={'folder'}>
-                {typeOptions.folder}
-              </Option>
+              {
+                modeQueryOptions.map((option) => {
+                  return <Option label={typeOptions[option]} key={option} value={option}>
+                    {typeOptions[option]}
+                  </Option>
+                })
+              }
             </Select>
             {
               typeData === 'folder' && (<Button style={{ marginLeft: 10 }} onClick={() => this.onClickHideShowModal(true)}>
                 {typeOptions.dataTree}
               </Button>)
+            }
+            {
+              typeData === 'dataType' && (<Select
+                dropdownAlign={dropdownAlign}
+                dropdownMatchSelectWidth={false}
+                style={{ width: 150, marginLeft: 10 }}
+                onChange={this.onChangeDataType}
+                value={this.state.dataTypeSelected}
+                filterOption={this.filterOption}
+                disabled={readonly}
+                {...customProps}
+              >
+                {
+                  (typeModelOptions || ['IFC', 'XML']).map((option) => {
+                    return <Option label={option} key={option} value={option}>
+                      {option}
+                    </Option>
+                  })
+                }
+              </Select>)
             }
           </>
         );

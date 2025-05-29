@@ -17,6 +17,8 @@ export default class Builder extends Component {
     onDragStart: PropTypes.func,
     searchObject: PropTypes.func,
     treeProject: PropTypes.object,
+    typeModelOptions: PropTypes.array,
+    modeQueryOptions: PropTypes.array,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -74,6 +76,8 @@ export default class Builder extends Component {
         tree={tree}
         searchObject={this.props.searchObject}
         treeProject={this.props.treeProject}
+        typeModelOptions={this.props.typeModelOptions}
+        modeQueryOptions={this.props.modeQueryOptions}
       />
     );
   }

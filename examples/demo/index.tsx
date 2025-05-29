@@ -91,6 +91,8 @@ const DemoQueryBuilder: React.FC = () => {
           <Builder {...bprops}
             searchObject={searchObject}
             treeProject={treeProject}
+            typeModelOptions={['IFC', 'XML']}
+            modeQueryOptions={['attribute', 'folder', 'dataType']}
           />
         </div>
       </div>

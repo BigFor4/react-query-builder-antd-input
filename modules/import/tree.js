@@ -37,10 +37,12 @@ function convertJson(inputJson) {
     const value = rule?.properties?.value?.[0]?.value || '';
     const type = rule?.properties?.value?.[0]?.type || '';
     const arrayModel = rule?.properties?.value?.[0]?.arrayModel || '';
+    const dataType = rule?.properties?.value?.[0]?.dataType || '';
     if (arrayModel.length > 0 || (operatorLabel && field && value !== null && value !== undefined)) {
       return {
         title: `Attribute.${field} ${operatorLabel} ${typeof value === 'string' ? value : ''}`,
         type,
+        dataType,
         arrayModel: arrayModel || []
       };
     } else {
@@ -102,6 +104,7 @@ function convertRule(node) {
   const valueData = {
     value: value?.toString() || '',
     type: node.type,
+    dataType: node.dataType || "",
     arrayModel: node.arrayModel
   }
   const rule = {

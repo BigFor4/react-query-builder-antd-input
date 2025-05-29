@@ -6,6 +6,7 @@ export const treeInit =
     {
       "title": "Attribute.Delprosjekt == 01",
       "type": "folder",
+      "dataType": "IFC",
       "arrayModel": [
         "eb1e1226-39eb-4b77-b2f3-3d4dea9c5d6b",
         "86ee46c6-3f4c-4bef-ab9b-3074d281990a",

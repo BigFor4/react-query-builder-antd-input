@@ -13,7 +13,7 @@ const skinToConfig: Record<string, Config> = {
 
 type Lang = keyof typeof localizers;
 
-export default (skin: string, lang: Lang = "fi") => {
+export default (skin: string, lang: Lang = "en") => {
   const InitialConfig = skinToConfig[skin] as BasicConfig;
 
   const conjunctions: Conjunctions = {
@@ -72,7 +72,6 @@ export default (skin: string, lang: Lang = "fi") => {
     defaultSelectWidth: "200px",
     defaultSearchWidth: "100px",
     defaultMaxRows: 5,
-
     valueSourcesInfo: {
       value: {
         label: "Value"
