@@ -46,7 +46,7 @@ export default class FieldSelect extends PureComponent {
     isValue: PropTypes.bool,
     arrayModel: PropTypes.array,
     dataType: PropTypes.string,
-    treeProject: PropTypes.object,
+    treeProject: PropTypes.array,
     typeData: PropTypes.string
   };
   state = {

@@ -25,7 +25,7 @@ export default class Field extends PureComponent {
     typeModelOptions: PropTypes.array,
     modeQueryOptions: PropTypes.array,
     setField: PropTypes.func.isRequired,
-    treeProject: PropTypes.object,
+    treeProject: PropTypes.array,
   };
 
   constructor(props) {

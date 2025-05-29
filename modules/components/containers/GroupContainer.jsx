@@ -31,7 +31,7 @@ const createGroupContainer = (Group) =>
       searchObject: PropTypes.func,
       typeModelOptions: PropTypes.array,
       modeQueryOptions: PropTypes.array,
-      treeProject: PropTypes.object,
+      treeProject: PropTypes.array,
     };
 
     constructor(props) {

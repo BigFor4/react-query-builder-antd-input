@@ -42,7 +42,7 @@ export class BasicGroup extends PureComponent {
     searchObject: PropTypes.func,
     typeModelOptions: PropTypes.array,
     modeQueryOptions: PropTypes.array,
-    treeProject: PropTypes.object,
+    treeProject: PropTypes.array,
   };
 
   constructor(props) {

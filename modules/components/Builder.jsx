@@ -4,7 +4,6 @@ import Immutable, {Map} from "immutable";
 import { Item } from "./item/Item";
 import SortableContainer from "./containers/SortableContainer";
 import {getTotalReordableNodesCountInTree, getTotalRulesCountInTree} from "../utils/treeUtils";
-import uuid from "../utils/uuid";
 import {pureShouldComponentUpdate} from "../utils/reactUtils";
 
 
@@ -16,7 +15,7 @@ export default class Builder extends Component {
     actions: PropTypes.object.isRequired,
     onDragStart: PropTypes.func,
     searchObject: PropTypes.func,
-    treeProject: PropTypes.object,
+    treeProject: PropTypes.array,
     typeModelOptions: PropTypes.array,
     modeQueryOptions: PropTypes.array,
   };

@@ -5,7 +5,7 @@ export const treeInit =
   "children": [
     {
       "title": "Attribute.Delprosjekt == 01",
-      "type": "folder",
+      "type": "dataType",
       "dataType": "IFC",
       "arrayModel": [
         "eb1e1226-39eb-4b77-b2f3-3d4dea9c5d6b",

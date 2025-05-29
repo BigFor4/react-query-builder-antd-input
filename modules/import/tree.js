@@ -151,7 +151,7 @@ function convertGroup(node) {
 function convertNode(node) {
   if (node.type === "operator") {
     return convertGroup(node);
-  } else if (node?.type === "attribute" || node?.type === "folder") {
+  } else if (node?.type === "attribute" || node?.type === "folder" || node?.type === "dataType") {
     return convertRule(node);
   }
 }
