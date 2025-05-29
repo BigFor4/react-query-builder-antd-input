@@ -5,3 +5,7 @@ Run Demo apps:
 - [`npm start`](/examples) - demo app with hot reload of demo code and local library code, uses TS, uses complex config to demonstrate anvanced usage.
 node 20
 npm i
+
+build
+npm login
+npm publish
